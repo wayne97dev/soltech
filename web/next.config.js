@@ -1,8 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // Esporta un sito statico in `out/` (la landing non richiede runtime server).
+  // Export a static site to `out/` (the site needs no server runtime).
   output: 'export',
+  // Emit each route as <route>/index.html for robust static hosting.
+  trailingSlash: true,
   images: { unoptimized: true },
 };
 

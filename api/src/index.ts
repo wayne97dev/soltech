@@ -4,6 +4,7 @@ import jwt from '@fastify/jwt';
 import { config } from './config';
 import { authRoutes } from './routes/auth';
 import { accessRoutes } from './routes/access';
+import { searchRoutes } from './routes/search';
 import { startReverifyWorker } from './worker/reverify';
 
 async function main(): Promise<void> {
@@ -14,7 +15,7 @@ async function main(): Promise<void> {
   app.addContentTypeParser('application/json', { parseAs: 'string' }, (_req, body, done) => {
     if (!body || body.length === 0) return done(null, undefined);
     try {
-      done(null, JSON.parse(body));
+      done(null, JSON.parse(body as string));
     } catch (err) {
       done(err as Error);
     }
@@ -27,6 +28,7 @@ async function main(): Promise<void> {
 
   await app.register(authRoutes);
   await app.register(accessRoutes);
+  await app.register(searchRoutes);
 
   startReverifyWorker();
 

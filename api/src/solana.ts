@@ -51,3 +51,16 @@ export async function checkEligibility(wallet: string): Promise<Eligibility> {
   const { amount } = await getTokenBalance(wallet, config.tokenMint);
   return { eligible: amount >= required, balance: amount, required };
 }
+
+// Short-lived cache so high-frequency endpoints (e.g. search) don't hit the RPC
+// on every request. Revocation latency is bounded by the TTL.
+const eligibilityCache = new Map<string, { at: number; value: Eligibility }>();
+const ELIGIBILITY_TTL_MS = 60_000;
+
+export async function checkEligibilityCached(wallet: string): Promise<Eligibility> {
+  const hit = eligibilityCache.get(wallet);
+  if (hit && Date.now() - hit.at < ELIGIBILITY_TTL_MS) return hit.value;
+  const value = await checkEligibility(wallet);
+  eligibilityCache.set(wallet, { at: Date.now(), value });
+  return value;
+}

@@ -64,6 +64,11 @@ async function main() {
   if (!prov.config) throw new Error('provision did not return a config: ' + JSON.stringify(prov));
   console.log('\n--- generated WireGuard config ---\n' + prov.config);
 
+  // Token-gated search (returns mock results unless SEARXNG_URL is set).
+  const sr = await (await fetch(`${API}/search?q=wireguard`, { headers: auth })).json();
+  if (!Array.isArray(sr.results)) throw new Error('search did not return results: ' + JSON.stringify(sr));
+  console.log(`\nsearch "wireguard": ${sr.results.length} results (source: ${sr.source})`);
+
   // Negative case: sign a different message but with a valid nonce -> must fail (401).
   const { message: m2 } = await (await post('/auth/nonce', { wallet })).json();
   const badSig = Buffer.from(

@@ -55,6 +55,26 @@ export async function provision(token: string): Promise<VpnConfig> {
   );
 }
 
+export interface SearchResult {
+  title: string;
+  url: string;
+  content: string;
+  engine: string;
+}
+
+export interface SearchResponse {
+  query: string;
+  results: SearchResult[];
+  number_of_results: number;
+  source: string;
+}
+
+export async function search(token: string, q: string): Promise<SearchResponse> {
+  return asJson(
+    await fetch(`${API}/search?q=${encodeURIComponent(q)}`, { headers: auth(token) }),
+  );
+}
+
 function auth(token: string): Record<string, string> {
   return { authorization: `Bearer ${token}` };
 }

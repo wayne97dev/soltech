@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import BackgroundFX from '../components/BackgroundFX';
 import Globe from '../components/Globe';
 import AccessPanel from '../components/AccessPanel';
@@ -28,7 +29,7 @@ export default function Home() {
         <nav className="nav-links">
           <a href="#features">features</a>
           <a href="#how">how it works</a>
-          <a href="#app">access</a>
+          <Link href="/search">search</Link>
           <a className="nav-cta" href="#app">[ launch app ]</a>
         </nav>
       </header>

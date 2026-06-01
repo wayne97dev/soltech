@@ -27,4 +27,7 @@ export const config = {
   },
 
   reverifyCron: process.env.REVERIFY_CRON ?? '0 * * * *',
+
+  // Search: URL of a self-hosted SearXNG instance. Empty = mock results (dev).
+  searxngUrl: process.env.SEARXNG_URL ?? '',
 };

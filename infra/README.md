@@ -72,3 +72,39 @@ WG_INTERFACE=wg0
 WG_CLIENT_SUBNET=10.8.0.0/24
 WG_DNS=1.1.1.1
 ```
+
+---
+
+# Search (SearXNG)
+
+SolTech Search proxies a self-hosted [SearXNG](https://docs.searxng.org) instance — a privacy metasearch engine that aggregates 70+ sources with no tracking, ads, or logs. The backend enforces token-gating and forwards queries to it.
+
+## Run it (Docker)
+
+```bash
+docker run -d --name searxng -p 8080:8080 \
+  -v "$(pwd)/infra/searxng:/etc/searxng" searxng/searxng:latest
+```
+
+Or use the `searxng` service in the repo's `docker-compose.yml`.
+
+## Enable the JSON API
+
+SolTech calls SearXNG's JSON output, which is **off by default**. In `infra/searxng/settings.yml` add:
+
+```yaml
+search:
+  formats:
+    - html
+    - json
+server:
+  secret_key: "change-me-to-a-long-random-string"
+```
+
+Restart SearXNG, then point the backend at it in `api/.env`:
+
+```bash
+SEARXNG_URL=http://localhost:8080
+```
+
+> When `SEARXNG_URL` is empty the backend returns demo results, so the search UI works without SearXNG running.

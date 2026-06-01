@@ -3,13 +3,8 @@
 import { useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-import { getNonce, verify, status, provision, type AccessStatus } from '../lib/api';
-
-function toBase64(bytes: Uint8Array): string {
-  let bin = '';
-  for (const b of bytes) bin += String.fromCharCode(b);
-  return btoa(bin);
-}
+import { status, provision, type AccessStatus } from '../lib/api';
+import { requestSignIn } from '../lib/auth';
 
 export default function AccessPanel() {
   const { publicKey, signMessage, connected } = useWallet();
@@ -24,12 +19,9 @@ export default function AccessPanel() {
     setBusy(true);
     setError(null);
     try {
-      const wallet = publicKey.toBase58();
-      const { message } = await getNonce(wallet);
-      const signature = await signMessage(new TextEncoder().encode(message));
-      const res = await verify(wallet, message, toBase64(signature));
-      setToken(res.token);
-      setInfo(await status(res.token));
+      const t = await requestSignIn(publicKey.toBase58(), signMessage);
+      setToken(t);
+      setInfo(await status(t));
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Sign-in error');
     } finally {

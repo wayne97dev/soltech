@@ -13,5 +13,18 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  # Privacy meta-search engine behind SolTech Search.
+  # Set SEARXNG_URL=http://localhost:8080 in api/.env, and enable the JSON API
+  # (search.formats: [html, json]) in infra/searxng/settings.yml — see infra/README.md.
+  searxng:
+    image: searxng/searxng:latest
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - SEARXNG_BASE_URL=http://localhost:8080/
+    volumes:
+      - ./infra/searxng:/etc/searxng
+
 volumes:
   pgdata:
