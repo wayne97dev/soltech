@@ -6,7 +6,7 @@ import { config } from './config';
 
 const sh = promisify(exec);
 
-// ----- Chiavi -----
+// ----- Keys -----
 
 export interface WgKeyPair {
   privateKey: string;
@@ -14,8 +14,8 @@ export interface WgKeyPair {
 }
 
 /**
- * Genera una coppia di chiavi WireGuard (Curve25519/X25519).
- * tweetnacl produce chiavi compatibili con WireGuard.
+ * Generates a WireGuard key pair (Curve25519/X25519).
+ * tweetnacl produces keys that are compatible with WireGuard.
  */
 export function generateKeyPair(): WgKeyPair {
   const kp = nacl.box.keyPair();
@@ -25,17 +25,17 @@ export function generateKeyPair(): WgKeyPair {
   };
 }
 
-/** Una chiave WireGuard valida = 32 byte in base64 (44 char, termina con '='). */
+/** A valid WireGuard key = 32 bytes in base64 (44 chars, ends with '='). */
 function assertWgKey(key: string): void {
   if (!/^[A-Za-z0-9+/]{43}=$/.test(key)) {
     throw new Error('Invalid WireGuard key format');
   }
 }
 
-// ----- Allocazione IP (IPAM minimale per un /24) -----
+// ----- IP allocation (minimal IPAM for a /24) -----
 
 export async function allocateAddress(): Promise<string> {
-  const base = config.wireguard.clientSubnet.split('/')[0].split('.').slice(0, 3).join('.'); // es. "10.8.0"
+  const base = config.wireguard.clientSubnet.split('/')[0].split('.').slice(0, 3).join('.'); // e.g. "10.8.0"
   const peers = await prisma.vpnPeer.findMany({ select: { address: true } });
   const used = new Set(peers.map((p) => p.address.split('/')[0]));
 
@@ -46,14 +46,14 @@ export async function allocateAddress(): Promise<string> {
   throw new Error('No free IP addresses in client subnet');
 }
 
-// ----- Provider: aggiunge/rimuove peer sul server WireGuard -----
+// ----- Provider: adds/removes peers on the WireGuard server -----
 
 export interface WireGuardProvider {
   addPeer(publicKey: string, address: string): Promise<void>;
   removePeer(publicKey: string): Promise<void>;
 }
 
-/** Sviluppo locale: non tocca nessun server, logga e basta. */
+/** Local development: touches no server, just logs. */
 class MockWireGuard implements WireGuardProvider {
   async addPeer(publicKey: string, address: string): Promise<void> {
     console.log(`[wg:mock] addPeer ${publicKey.slice(0, 10)}… -> ${address}`);
@@ -63,7 +63,7 @@ class MockWireGuard implements WireGuardProvider {
   }
 }
 
-/** Produzione: esegue `wg` sull'host (il backend gira sul server WireGuard). */
+/** Production: runs `wg` on the host (the backend runs on the WireGuard server). */
 class LocalWireGuard implements WireGuardProvider {
   async addPeer(publicKey: string, address: string): Promise<void> {
     assertWgKey(publicKey);
@@ -81,7 +81,7 @@ class LocalWireGuard implements WireGuardProvider {
 export const wireguard: WireGuardProvider =
   config.wireguard.provider === 'local' ? new LocalWireGuard() : new MockWireGuard();
 
-// ----- Generazione del file .conf per il client -----
+// ----- Client .conf generation -----
 
 export function buildClientConfig(privateKey: string, address: string): string {
   return [

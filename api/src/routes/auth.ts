@@ -5,20 +5,20 @@ import { prisma } from '../db';
 import { buildSignInMessage, verifySignature } from '../siws';
 
 export async function authRoutes(app: FastifyInstance): Promise<void> {
-  // 1) Il client chiede un nonce da firmare.
+  // 1) The client requests a nonce to sign.
   app.post('/auth/nonce', async (req) => {
     const { wallet } = z.object({ wallet: z.string().min(32) }).parse(req.body);
 
     const nonce = randomBytes(16).toString('hex');
     const issuedAt = new Date().toISOString();
-    const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minuti
+    const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
 
     await prisma.authNonce.create({ data: { wallet, nonce, expiresAt } });
 
     return { message: buildSignInMessage(wallet, nonce, issuedAt), nonce };
   });
 
-  // 2) Il client invia il messaggio firmato; verifichiamo e rilasciamo una sessione (JWT).
+  // 2) The client sends the signed message; we verify it and issue a session (JWT).
   app.post('/auth/verify', async (req, reply) => {
     const { wallet, message, signature } = z
       .object({ wallet: z.string().min(32), message: z.string(), signature: z.string() })
@@ -38,7 +38,7 @@ export async function authRoutes(app: FastifyInstance): Promise<void> {
       return reply.code(401).send({ error: 'bad-signature' });
     }
 
-    // Nonce usa-e-getta: rimuovi tutti i nonce di questo wallet.
+    // One-time nonce: remove every nonce for this wallet.
     await prisma.authNonce.deleteMany({ where: { wallet } });
     await prisma.user.upsert({ where: { wallet }, update: {}, create: { wallet } });
 

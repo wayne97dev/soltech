@@ -4,12 +4,12 @@ import { config } from './config';
 const connection = new Connection(config.solanaRpcUrl, 'confirmed');
 
 export interface BalanceResult {
-  amount: number; // quantità in token interi (UI amount)
+  amount: number; // amount in whole tokens (UI amount)
   decimals: number;
-  raw: string; // intero grezzo come stringa
+  raw: string; // raw integer as a string
 }
 
-/** Somma il saldo di un dato mint su tutti i token account del wallet. */
+/** Sums the balance of a given mint across all of the wallet's token accounts. */
 export async function getTokenBalance(wallet: string, mint: string): Promise<BalanceResult> {
   const owner = new PublicKey(wallet);
   const mintPk = new PublicKey(mint);
@@ -36,11 +36,11 @@ export interface Eligibility {
   reason?: string;
 }
 
-/** Regola centrale: questo wallet ha diritto alla VPN gratis? */
+/** Core rule: is this wallet entitled to free VPN access? */
 export async function checkEligibility(wallet: string): Promise<Eligibility> {
   const required = config.minTokenBalance;
 
-  // Scorciatoia per lo sviluppo prima che il token esista.
+  // Shortcut for development, before the token exists.
   if (config.devBypassTokenGate) {
     return { eligible: true, balance: required, required, reason: 'dev-bypass' };
   }

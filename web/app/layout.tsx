@@ -3,9 +3,9 @@ import './globals.css';
 import { Providers } from './providers';
 
 export const metadata: Metadata = {
-  title: 'SolTech VPN — la rete privata che possiedi',
+  title: 'SolTech VPN — the private network you own',
   description:
-    'VPN veloce, cifrata e senza log, gratuita per gli holder del token SolTech su Solana. Tieni il token, hai la rete.',
+    'Fast, encrypted, no-logs VPN, free for holders of the SolTech token on Solana. Hold the token, own the network.',
 };
 
 export const viewport: Viewport = {
@@ -14,7 +14,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="it">
+    <html lang="en">
       <body>
         <Providers>{children}</Providers>
       </body>

@@ -9,7 +9,7 @@ import {
 } from '../wireguard';
 
 export async function accessRoutes(app: FastifyInstance): Promise<void> {
-  // Tutte le rotte qui richiedono una sessione valida.
+  // All routes here require a valid session.
   app.addHook('preHandler', async (req, reply) => {
     try {
       await req.jwtVerify();
@@ -18,7 +18,7 @@ export async function accessRoutes(app: FastifyInstance): Promise<void> {
     }
   });
 
-  // Stato: idoneità + VPN attiva o no.
+  // Status: eligibility + whether the VPN is active.
   app.get('/access/status', async (req) => {
     const { wallet } = req.user;
     const elig = await checkEligibility(wallet);
@@ -38,7 +38,7 @@ export async function accessRoutes(app: FastifyInstance): Promise<void> {
     };
   });
 
-  // Provisioning: se idoneo, crea (o riusa) il peer e restituisce la config.
+  // Provisioning: if eligible, create (or reuse) the peer and return the config.
   app.post('/access/provision', async (req, reply) => {
     const { wallet } = req.user;
 
@@ -76,7 +76,7 @@ export async function accessRoutes(app: FastifyInstance): Promise<void> {
     };
   });
 
-  // Revoca manuale di tutti i peer attivi del wallet.
+  // Manually revoke all of the wallet's active peers.
   app.post('/access/revoke', async (req) => {
     const { wallet } = req.user;
     const user = await prisma.user.findUnique({

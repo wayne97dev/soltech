@@ -1,6 +1,6 @@
-# Il sito Next.js sta nella sottocartella web/ ed è esportato come sito statico.
-# base = web  -> Netlify entra in web/ per installare ed eseguire la build
-# publish = out -> pubblica web/out (percorso relativo a base)
+# The Next.js app lives in the web/ subfolder and is exported as a static site.
+# base = web    -> Netlify cd's into web/ to install and run the build
+# publish = out -> publishes web/out (path relative to base)
 [build]
   base = "web"
   command = "npm run build"

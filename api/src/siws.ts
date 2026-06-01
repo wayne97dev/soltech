@@ -3,14 +3,14 @@ import { PublicKey } from '@solana/web3.js';
 
 const DOMAIN = 'SolTech VPN';
 
-/** Costruisce il messaggio leggibile che l'utente firmerà nel wallet. */
+/** Builds the human-readable message the user will sign in their wallet. */
 export function buildSignInMessage(wallet: string, nonce: string, issuedAt: string): string {
   return [
     `${DOMAIN} wants you to sign in with your Solana account:`,
     wallet,
     '',
-    'Firma questo messaggio per dimostrare che il wallet è tuo e sbloccare la VPN.',
-    'Questa richiesta non genera transazioni e non ha alcun costo.',
+    'Sign this message to prove you own this wallet and unlock token-gated VPN access.',
+    'This request will not trigger a transaction or cost any fees.',
     '',
     `Nonce: ${nonce}`,
     `Issued At: ${issuedAt}`,
@@ -18,8 +18,8 @@ export function buildSignInMessage(wallet: string, nonce: string, issuedAt: stri
 }
 
 /**
- * Verifica una firma ed25519 (Solana) sul messaggio.
- * `signatureB64` è la firma codificata in base64 (vedi frontend).
+ * Verifies an ed25519 (Solana) signature over the message.
+ * `signatureB64` is the signature encoded as base64 (see the frontend).
  */
 export function verifySignature(message: string, signatureB64: string, wallet: string): boolean {
   try {

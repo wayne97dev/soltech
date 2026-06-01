@@ -3,17 +3,17 @@ import Globe from '../components/Globe';
 import AccessPanel from '../components/AccessPanel';
 
 const FEATURES = [
-  { n: '01', t: 'TOKEN-GATED', d: 'Accesso legato al possesso del token. Niente carte, niente abbonamenti.' },
-  { n: '02', t: 'ZERO LOG', d: 'Nessun registro del traffico. La tua attività resta soltanto tua.' },
-  { n: '03', t: 'WIREGUARD', d: 'Protocollo moderno: veloce, leggero, cifrato end-to-end.' },
-  { n: '04', t: 'ON-CHAIN', d: 'Verifica del saldo direttamente su Solana ad ogni accesso.' },
+  { n: '01', t: 'TOKEN-GATED', d: 'Access tied to token ownership. No cards, no subscriptions.' },
+  { n: '02', t: 'ZERO LOG', d: 'No traffic logs. Your activity stays yours alone.' },
+  { n: '03', t: 'WIREGUARD', d: 'Modern protocol: fast, lightweight, end-to-end encrypted.' },
+  { n: '04', t: 'ON-CHAIN', d: 'Balance verified directly on Solana on every access.' },
 ];
 
 const STEPS = [
-  { n: '01', t: 'Connetti il wallet', d: 'Phantom, Solflare o Backpack. Un click.' },
-  { n: '02', t: 'Firma', d: 'Un messaggio per provare che il wallet è tuo. Gratis, zero gas.' },
-  { n: '03', t: 'Tieni il token', d: 'Finché resti sopra la soglia, la rete è tua.' },
-  { n: '04', t: 'Connettiti', d: 'Scarica la config WireGuard e naviga protetto.' },
+  { n: '01', t: 'Connect your wallet', d: 'Phantom, Solflare or Backpack. One click.' },
+  { n: '02', t: 'Sign', d: 'A message proving the wallet is yours. Free, zero gas.' },
+  { n: '03', t: 'Hold the token', d: 'As long as you stay above the threshold, the network is yours.' },
+  { n: '04', t: 'Connect', d: 'Download the WireGuard config and browse protected.' },
 ];
 
 export default function Home() {
@@ -27,8 +27,8 @@ export default function Home() {
         </a>
         <nav className="nav-links">
           <a href="#features">features</a>
-          <a href="#how">come funziona</a>
-          <a href="#app">accedi</a>
+          <a href="#how">how it works</a>
+          <a href="#app">access</a>
           <a className="nav-cta" href="#app">[ launch app ]</a>
         </nav>
       </header>
@@ -39,21 +39,21 @@ export default function Home() {
           <div className="hero-copy">
             <p className="eyebrow">// VPN ON-CHAIN · SOLANA</p>
             <h1 className="title">
-              La rete privata
+              The private network
               <br />
-              che <span className="under">possiedi</span>.
+              you <span className="under">own</span>.
             </h1>
             <p className="lead">
-              VPN veloce, cifrata e senza log — gratuita per gli holder del token SolTech.
-              Niente abbonamenti: tieni il token, hai la rete.
+              Fast, encrypted, no-logs VPN — free for SolTech token holders.
+              No subscriptions: hold the token, own the network.
             </p>
             <div className="cta-row">
-              <a className="btn primary" href="#app">[ connetti wallet ]</a>
-              <a className="btn" href="#how">come funziona →</a>
+              <a className="btn primary" href="#app">[ connect wallet ]</a>
+              <a className="btn" href="#how">how it works →</a>
             </div>
             <p className="statusline">
-              <span className="blink">●</span> rete: 12 nodi online &nbsp;·&nbsp; protocollo: wireguard
-              &nbsp;·&nbsp; log: 0
+              <span className="blink">●</span> network: 12 nodes online &nbsp;·&nbsp; protocol: wireguard
+              &nbsp;·&nbsp; logs: 0
             </p>
           </div>
 
@@ -64,7 +64,7 @@ export default function Home() {
 
         {/* FEATURES */}
         <section id="features" className="features">
-          <p className="section-label">// perché SolTech</p>
+          <p className="section-label">// why SolTech</p>
           <div className="feature-grid">
             {FEATURES.map((f) => (
               <article key={f.n} className="feature">
@@ -78,8 +78,8 @@ export default function Home() {
 
         {/* HOW IT WORKS */}
         <section id="how" className="how">
-          <p className="section-label">// come funziona</p>
-          <h2 className="section-title">Dal wallet alla rete in quattro passi.</h2>
+          <p className="section-label">// how it works</p>
+          <h2 className="section-title">From wallet to network in four steps.</h2>
           <ol className="steps">
             {STEPS.map((s) => (
               <li key={s.n} className="step">
@@ -96,15 +96,15 @@ export default function Home() {
         {/* APP / ACCESS */}
         <section id="app" className="access">
           <div className="access-copy">
-            <p className="section-label">// accedi alla rete</p>
-            <h2 className="section-title">Connetti il wallet e attiva la VPN.</h2>
+            <p className="section-label">// access the network</p>
+            <h2 className="section-title">Connect your wallet and activate the VPN.</h2>
             <p className="lead">
-              L'idoneità viene verificata on-chain. Se tieni il token, ottieni subito la tua
-              configurazione WireGuard pronta da importare.
+              Eligibility is verified on-chain. If you hold the token, you immediately get your
+              WireGuard configuration, ready to import.
             </p>
             <ul className="access-notes">
-              <li>→ la firma non costa gas e non genera transazioni</li>
-              <li>→ se vendi il token, l'accesso viene revocato in automatico</li>
+              <li>→ signing costs no gas and creates no transaction</li>
+              <li>→ if you sell the token, access is revoked automatically</li>
             </ul>
           </div>
           <AccessPanel />
@@ -124,9 +124,9 @@ export default function Home() {
               github
             </a>
             <a href="#features">features</a>
-            <a href="#app">accedi</a>
+            <a href="#app">access</a>
           </span>
-          <span className="footer-meta">costruito su Solana · © 2026</span>
+          <span className="footer-meta">built on Solana · © 2026</span>
         </div>
       </footer>
     </>

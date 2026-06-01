@@ -1,61 +1,64 @@
 # SolTech VPN
 
-VPN privata e veloce, **gratuita solo per gli holder del token SolTech** (SPL su Solana, lanciato via pump.fun).
-L'accesso è legato al possesso del token: finché tieni il token nel wallet, hai la VPN; se vendi sotto la soglia, l'accesso viene revocato automaticamente.
+A fast, private VPN that is **free only for holders of the SolTech token** (an SPL token on Solana, launched via pump.fun).
+Access is tied to token ownership: hold the token and you keep the VPN; sell below the threshold and access is revoked automatically.
 
-> Stato: **MVP** — portale web (frontend + backend) + WireGuard self-hosted. Il token e le feature aggiuntive arrivano dopo.
+> Status: **MVP** — web portal (frontend + backend) + self-hosted WireGuard. The token and the extra features come later.
 
 ---
 
-## Come funziona
+## How it works
 
 ```
-┌──────────┐   1. connetti wallet      ┌─────────────┐   3. leggo saldo token   ┌──────────┐
+┌──────────┐   1. connect wallet       ┌─────────────┐   3. read token balance  ┌──────────┐
 │  Browser │ ────────────────────────► │   Backend   │ ───────────────────────► │  Solana  │
-│ (Next.js)│   2. firma messaggio      │  (Fastify)  │ ◄─────────────────────── │   RPC    │
-│ + wallet │ ◄──────────────────────── │             │   4. se idoneo:          └──────────┘
-└──────────┘   5. config WireGuard     │             │      crea peer WireGuard ┌──────────┐
-                                        │             │ ───────────────────────► │ Server   │
-                                        └─────────────┘                          │ WireGuard│
-                                              │  6. cron ricontrolla i saldi     └──────────┘
-                                              └────► se ha venduto → revoca
+│ (Next.js)│   2. sign message         │  (Fastify)  │ ◄─────────────────────── │   RPC    │
+│ + wallet │ ◄──────────────────────── │             │   4. if eligible:        └──────────┘
+└──────────┘   5. WireGuard config     │             │      create WG peer      ┌──────────┐
+                                        │             │ ───────────────────────► │ WireGuard│
+                                        └─────────────┘                          │  server  │
+                                              │  6. cron re-checks balances      └──────────┘
+                                              └────► sold below threshold → revoke
 ```
 
-1. L'utente connette il wallet (Phantom / Solflare).
-2. Firma un messaggio **Sign-in with Solana** — gratis, nessuna transazione, prova solo che il wallet è suo.
-3. Il backend legge **on-chain** quanti token possiede.
-4. Se è ≥ soglia → genera una coppia di chiavi WireGuard, assegna un IP e abilita il peer sul server VPN.
-5. Il portale restituisce il file `.conf` da importare nell'app WireGuard.
-6. Un worker (cron) ricontrolla periodicamente i saldi e **revoca** chi è sceso sotto soglia.
+1. The user connects a wallet (Phantom / Solflare).
+2. They sign a **Sign-in with Solana** message — free, no transaction, it only proves the wallet is theirs.
+3. The backend reads the token balance **on-chain**.
+4. If it is ≥ threshold → it generates a WireGuard key pair, assigns an IP, and enables the peer on the VPN server.
+5. The portal returns a `.conf` file to import into the WireGuard app.
+6. A worker (cron) periodically re-checks balances and **revokes** anyone who dropped below the threshold.
 
 ---
 
-## Struttura del repo
+## Repository structure
 
 ```
 soltech/
-├── api/                 # Backend Fastify + TypeScript
-│   ├── prisma/          # Schema database (SQLite in dev, Postgres in prod)
+├── api/                      # Backend — Fastify + TypeScript
+│   ├── prisma/               # Database schema (SQLite in dev, Postgres in prod)
+│   ├── scripts/smoke.cjs     # End-to-end smoke test
 │   └── src/
-│       ├── config.ts    # Tutta la configurazione da .env
-│       ├── siws.ts      # Sign-in with Solana (messaggio + verifica firma)
-│       ├── solana.ts    # Lettura saldo token + regole di idoneità
-│       ├── wireguard.ts # Chiavi, IP, provider (mock/local), generazione .conf
-│       ├── routes/      # /auth/* e /access/*
-│       ├── worker/      # Ri-verifica periodica dei saldi
-│       └── index.ts     # Avvio server + worker
-├── web/                 # Frontend Next.js + Solana wallet-adapter
-│   ├── app/             # Pagina, providers, stile
-│   └── lib/api.ts       # Client verso il backend
-├── infra/               # Come tirare su un server WireGuard reale
-└── docker-compose.yml   # Postgres pronto per la produzione
+│       ├── config.ts         # All configuration, loaded from .env
+│       ├── siws.ts           # Sign-in with Solana (message + signature verification)
+│       ├── solana.ts         # Token balance read + eligibility rules
+│       ├── wireguard.ts      # Keys, IP allocation, provider (mock/local), .conf generation
+│       ├── routes/           # /auth/* and /access/*
+│       ├── worker/           # Periodic balance re-verification
+│       └── index.ts          # Server + worker bootstrap
+├── web/                      # Frontend — Next.js + Solana wallet-adapter
+│   ├── app/                  # Page, providers, global styles
+│   ├── components/           # Globe (animated), BackgroundFX, AccessPanel
+│   └── lib/api.ts            # Backend client
+├── infra/README.md           # How to stand up a real WireGuard server
+├── netlify.toml              # Frontend deploy config (static export from web/)
+└── docker-compose.yml        # Postgres for production
 ```
 
 ---
 
-## Avvio rapido (sviluppo locale, senza token né server VPN)
+## Quickstart (local dev — no token, no VPN server required)
 
-Grazie a `DEV_BYPASS_TOKEN_GATE=true` e al provider WireGuard `mock`, puoi provare **tutto il flusso** prima ancora di lanciare il token o di avere un server VPN.
+Thanks to `DEV_BYPASS_TOKEN_GATE=true` and the `mock` WireGuard provider, you can try the **whole flow** before you launch the token or own a VPN server.
 
 ### 1. Backend
 
@@ -64,11 +67,17 @@ cd api
 cp .env.example .env
 npm install
 npm run prisma:generate
-npm run prisma:migrate -- --name init   # crea il DB SQLite locale
+npm run prisma:migrate -- --name init   # creates the local SQLite DB
 npm run dev                             # http://localhost:4000
 ```
 
-### 2. Frontend (in un altro terminale)
+Run the end-to-end smoke test (server must be running):
+
+```bash
+npm run smoke
+```
+
+### 2. Frontend (in another terminal)
 
 ```bash
 cd web
@@ -77,65 +86,97 @@ npm install
 npm run dev                             # http://localhost:3000
 ```
 
-Apri **http://localhost:3000**, connetti il wallet, firma, e — grazie al bypass dev — vedrai la config WireGuard generata (mock).
+Open **http://localhost:3000**, connect a wallet, sign — and thanks to the dev bypass you'll see the generated (mock) WireGuard config.
 
 ---
 
-## Collegare il token vero (dopo il lancio su pump.fun)
+## Connecting the real token (after the pump.fun launch)
 
-Nel file `api/.env`:
+In `api/.env`:
 
 ```bash
 DEV_BYPASS_TOKEN_GATE=false
-TOKEN_MINT=<mint_address_dato_da_pumpfun>
-MIN_TOKEN_BALANCE=100000          # quanti token servono per la VPN gratis
-SOLANA_RPC_URL=https://...        # consigliato un RPC dedicato (Helius/QuickNode), gli endpoint pubblici sono rate-limited
+TOKEN_MINT=<mint_address_from_pumpfun>
+MIN_TOKEN_BALANCE=100000           # how many tokens are required for free VPN
+SOLANA_RPC_URL=https://...         # use a dedicated RPC (Helius/QuickNode); public endpoints are rate-limited
 ```
 
-Da quel momento l'accesso dipende dal saldo reale on-chain. Non serve toccare il codice.
+From then on, access depends on the real on-chain balance. No code changes needed.
 
 ---
 
-## Collegare un server WireGuard reale
+## Connecting a real WireGuard server
 
-1. Segui [`infra/README.md`](infra/README.md) per tirare su un server (Ubuntu + WireGuard).
-2. Nel file `api/.env`:
+1. Follow [`infra/README.md`](infra/README.md) to stand up a server (Ubuntu + WireGuard).
+2. In `api/.env`:
 
 ```bash
-WIREGUARD_PROVIDER=local              # esegue `wg` su questo host
-WG_SERVER_ENDPOINT=<ip_server>:51820
-WG_SERVER_PUBLIC_KEY=<public_key_del_server>
+WIREGUARD_PROVIDER=local              # runs `wg` on this host
+WG_SERVER_ENDPOINT=<server_ip>:51820
+WG_SERVER_PUBLIC_KEY=<server_public_key>
 WG_INTERFACE=wg0
 ```
 
-> Con il provider `local` il backend deve girare **sullo stesso host** del server WireGuard (o tramite un piccolo agent) e con i permessi per eseguire `wg`. Per più region si replica questo schema dietro un selettore di server.
+> With the `local` provider the backend must run on the **same host** as the WireGuard server (or via a small agent), with permission to run `wg`. For multiple regions, replicate this setup behind a server selector.
 
 ---
 
-## Passaggio a Postgres (produzione)
+## Deployment
 
-1. `api/prisma/schema.prisma` → cambia `provider = "sqlite"` in `provider = "postgresql"`.
-2. `api/.env` → `DATABASE_URL=postgresql://soltech:soltech@localhost:5432/soltech?schema=public`.
-3. Avvia il DB con `docker compose up -d` (usa il `docker-compose.yml` incluso) e `npm run prisma:migrate`.
+### Frontend → Netlify (static)
+
+The landing page is a fully static Next.js export (`output: 'export'` in `web/next.config.js`, which makes `next build` emit `web/out/`). The included `netlify.toml` already points Netlify at the `web/` subfolder:
+
+```toml
+[build]
+  base = "web"
+  command = "npm run build"
+  publish = "out"
+```
+
+Connect the repo in Netlify and deploy — no extra settings needed. To preview the static build locally:
+
+```bash
+npx serve web/out
+```
+
+When the backend is hosted, set `NEXT_PUBLIC_API_URL` in Netlify (Site settings → Environment variables) to the backend's public URL so the wallet flow can reach it.
+
+### Backend → VPS
+
+The backend runs through `tsx` (no compile step). Host it on the same machine as WireGuard (provider `local`) or next to a WireGuard agent, provide the env vars from `.env.example`, then:
+
+```bash
+npm start            # = tsx src/index.ts
+```
 
 ---
 
-## Note di sicurezza (da affrontare prima del lancio pubblico)
+## Switching to Postgres (production)
 
-- **Chiavi private WireGuard**: in questo MVP il server genera la chiave del client e la conserva per poter rimostrare la config. È comodo ma non ideale. Evoluzione: far generare la chiave **sul dispositivo dell'utente** e inviare solo la chiave pubblica. → vedi roadmap.
-- **Privacy / no-logs**: l'accesso è legato a un wallet on-chain, ma il *traffico* VPN non deve essere collegabile al wallet. Tenere separati i dati di accesso dai dati di sessione.
-- **Condivisione config**: limitare i peer per wallet e le connessioni concorrenti per evitare che una sola persona condivida l'accesso.
-- **Abusi / legale**: un exit node implica gestione di abuse report (DMCA ecc.). Va previsto prima di aprire al pubblico.
-- `JWT_SECRET` lungo e casuale in produzione.
+1. In `api/prisma/schema.prisma`, change `provider = "sqlite"` to `provider = "postgresql"`.
+2. In `api/.env`, set `DATABASE_URL=postgresql://soltech:soltech@localhost:5432/soltech?schema=public`.
+3. Start the DB with `docker compose up -d` (uses the included `docker-compose.yml`) and run `npm run prisma:migrate`.
 
 ---
 
-## Roadmap (i "futures" da definire)
+## Security notes (to address before a public launch)
 
-- [ ] Selezione server / multi-region
-- [ ] Tier di accesso in base alla quantità di token tenuti (più tieni, più server/banda)
-- [ ] Generazione chiavi lato client (privacy)
-- [ ] QR code della config + app desktop/mobile brandizzata
-- [ ] Limiti dispositivi e connessioni concorrenti
-- [ ] Dashboard: uptime, banda, stato peer
-- [ ] Pagamenti/staking opzionali per chi non vuole holdare
+- **WireGuard private keys**: in this MVP the server generates the client key and stores it so it can re-display the config. It's convenient but not ideal. Next step: generate the key **on the user's device** and send only the public key. → see roadmap.
+- **Privacy / no-logs**: access is tied to an on-chain wallet, but VPN *traffic* must not be linkable to the wallet. Keep access data separate from session data.
+- **Config sharing**: limit peers per wallet and concurrent connections so one person can't share access.
+- **Abuse / legal**: an exit node means handling abuse reports (DMCA, etc.). Plan for it before opening to the public.
+- Use a long, random `JWT_SECRET` in production.
+
+---
+
+## Roadmap (the "features" to define)
+
+- [ ] Server selection / multi-region
+- [ ] Access tiers based on how many tokens are held (hold more → more servers/bandwidth)
+- [ ] Client-side key generation (privacy)
+- [ ] Config QR code + branded desktop/mobile app
+- [ ] Device and concurrent-connection limits
+- [ ] Dashboard: uptime, bandwidth, peer status
+- [ ] Optional payments/staking for users who'd rather not hold
+```

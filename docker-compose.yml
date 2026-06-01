@@ -1,5 +1,5 @@
-# Postgres per la produzione. In sviluppo locale il backend usa SQLite (zero setup).
-# Avvio: docker compose up -d
+# Postgres for production. In local dev the backend uses SQLite (zero setup).
+# Start: docker compose up -d
 services:
   postgres:
     image: postgres:16

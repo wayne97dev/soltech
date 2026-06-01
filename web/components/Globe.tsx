@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 
 type Vec3 = { x: number; y: number; z: number };
 
-// Nodi = sedi server (coordinate reali di grandi città).
+// Nodes = server locations (real coordinates of major cities).
 const NODES: { lat: number; lon: number }[] = [
   { lat: 40.71, lon: -74.0 }, // New York
   { lat: 51.51, lon: -0.13 }, // London
@@ -20,7 +20,7 @@ const NODES: { lat: number; lon: number }[] = [
   { lat: 25.2, lon: 55.27 }, // Dubai
 ];
 
-// Coppie di nodi collegate da un "tunnel" animato.
+// Pairs of nodes connected by an animated "tunnel".
 const ARC_PAIRS: [number, number][] = [
   [0, 1], [1, 2], [2, 3], [6, 0], [4, 3], [8, 0], [5, 10], [11, 2], [9, 1],
 ];
@@ -78,7 +78,7 @@ export default function Globe() {
     const cosT = Math.cos(tilt);
     const sinT = Math.sin(tilt);
 
-    // Rotazione attorno all'asse Y, poi inclinazione attorno all'asse X.
+    // Rotate around the Y axis, then tilt around the X axis.
     const transform = (v: Vec3, rot: number): Vec3 => {
       const cosR = Math.cos(rot);
       const sinR = Math.sin(rot);
@@ -90,7 +90,7 @@ export default function Globe() {
       return { x, y: y2, z: z2 };
     };
 
-    // z in [-1,1] -> opacità (fronte luminoso, retro attenuato).
+    // z in [-1,1] -> opacity (bright front, dimmed back).
     const depthAlpha = (z: number, front = 0.85, back = 0.07) => {
       const t = (z + 1) / 2;
       return back + (front - back) * t;
@@ -105,7 +105,7 @@ export default function Globe() {
 
       ctx.clearRect(0, 0, w, h);
 
-      // Alone luminoso dietro al globo.
+      // Glowing halo behind the globe.
       const halo = ctx.createRadialGradient(cx, cy, R * 0.2, cx, cy, R * 1.65);
       halo.addColorStop(0, 'rgba(130,170,255,0.06)');
       halo.addColorStop(0.55, 'rgba(130,170,255,0.02)');
@@ -118,7 +118,7 @@ export default function Globe() {
       ctx.lineWidth = 1;
       ctx.lineCap = 'round';
 
-      // Paralleli.
+      // Parallels.
       for (let lat = -80; lat <= 80; lat += 20) {
         let prev: { x: number; y: number; z: number } | null = null;
         for (let lon = 0; lon <= 360; lon += 9) {
@@ -137,7 +137,7 @@ export default function Globe() {
         }
       }
 
-      // Meridiani.
+      // Meridians.
       for (let lon = 0; lon < 360; lon += 30) {
         let prev: { x: number; y: number; z: number } | null = null;
         for (let lat = -90; lat <= 90; lat += 6) {
@@ -156,7 +156,7 @@ export default function Globe() {
         }
       }
 
-      // Archi (tunnel VPN) con impulso in movimento.
+      // Arcs (VPN tunnels) with a moving pulse.
       for (let i = 0; i < ARC_PAIRS.length; i++) {
         const [a, b] = ARC_PAIRS[i];
         const va = toVec(NODES[a].lat, NODES[a].lon);
@@ -197,7 +197,7 @@ export default function Globe() {
         }
       }
 
-      // Nodi (solo quelli sulla faccia visibile).
+      // Nodes (only those on the visible face).
       for (const n of NODES) {
         const p = transform(toVec(n.lat, n.lon), rot);
         if (p.z <= 0) continue;

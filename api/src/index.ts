@@ -9,8 +9,8 @@ import { startReverifyWorker } from './worker/reverify';
 async function main(): Promise<void> {
   const app = Fastify({ logger: true });
 
-  // Accetta POST senza body anche con content-type application/json
-  // (es. /access/provision, /access/revoke che non hanno corpo).
+  // Accept body-less POSTs even when content-type is application/json
+  // (e.g. /access/provision, /access/revoke have no body).
   app.addContentTypeParser('application/json', { parseAs: 'string' }, (_req, body, done) => {
     if (!body || body.length === 0) return done(null, undefined);
     try {
@@ -31,7 +31,7 @@ async function main(): Promise<void> {
   startReverifyWorker();
 
   await app.listen({ port: config.port, host: '0.0.0.0' });
-  app.log.info(`SolTech API in ascolto su :${config.port}`);
+  app.log.info(`SolTech API listening on :${config.port}`);
 }
 
 main().catch((err) => {

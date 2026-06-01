@@ -5,8 +5,8 @@ import { wireguard } from '../wireguard';
 import { config } from '../config';
 
 /**
- * Ricontrolla periodicamente i saldi: chi è sceso sotto soglia
- * (ha venduto il token) perde l'accesso alla VPN.
+ * Periodically re-checks balances: anyone who dropped below the threshold
+ * (sold the token) loses VPN access.
  */
 export function startReverifyWorker(): void {
   cron.schedule(config.reverifyCron, async () => {
@@ -14,7 +14,7 @@ export function startReverifyWorker(): void {
       where: { active: true },
       include: { user: true },
     });
-    console.log(`[reverify] controllo ${peers.length} peer attivi`);
+    console.log(`[reverify] checking ${peers.length} active peers`);
 
     for (const peer of peers) {
       try {
@@ -23,7 +23,7 @@ export function startReverifyWorker(): void {
           await wireguard.removePeer(peer.publicKey).catch(() => {});
           await prisma.vpnPeer.update({ where: { id: peer.id }, data: { active: false } });
           console.log(
-            `[reverify] revocato ${peer.user.wallet} (saldo ${elig.balance} < ${elig.required})`,
+            `[reverify] revoked ${peer.user.wallet} (balance ${elig.balance} < ${elig.required})`,
           );
         } else {
           await prisma.vpnPeer.update({
@@ -32,10 +32,10 @@ export function startReverifyWorker(): void {
           });
         }
       } catch (e) {
-        console.error(`[reverify] errore per ${peer.user.wallet}`, e);
+        console.error(`[reverify] error for ${peer.user.wallet}`, e);
       }
     }
   });
 
-  console.log(`[reverify] schedulato (${config.reverifyCron})`);
+  console.log(`[reverify] scheduled (${config.reverifyCron})`);
 }

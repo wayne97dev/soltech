@@ -31,7 +31,7 @@ export default function AccessPanel() {
       setToken(res.token);
       setInfo(await status(res.token));
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Errore di accesso');
+      setError(e instanceof Error ? e.message : 'Sign-in error');
     } finally {
       setBusy(false);
     }
@@ -46,7 +46,7 @@ export default function AccessPanel() {
       setConfig(res.config);
       setInfo(await status(token));
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Errore di attivazione');
+      setError(e instanceof Error ? e.message : 'Activation error');
     } finally {
       setBusy(false);
     }
@@ -83,7 +83,7 @@ export default function AccessPanel() {
 
         {!connected && (
           <p className="line muted">
-            <span className="caret">▏</span> in attesa del wallet…
+            <span className="caret">▏</span> waiting for wallet…
           </p>
         )}
 
@@ -91,7 +91,7 @@ export default function AccessPanel() {
           <WalletMultiButton />
           {connected && !token && (
             <button className="btn" disabled={busy} onClick={signIn}>
-              {busy ? 'firma in corso…' : '[ accedi con firma ]'}
+              {busy ? 'signing…' : '[ sign in ]'}
             </button>
           )}
         </div>
@@ -99,29 +99,29 @@ export default function AccessPanel() {
         {info && (
           <div className="readout">
             <p className="line">
-              <span className="ok">✔</span> wallet&nbsp;&nbsp;&nbsp;<span className="val">{short}</span>
+              <span className="ok">✔</span> wallet&nbsp;&nbsp;&nbsp;&nbsp;<span className="val">{short}</span>
             </p>
             <p className="line">
-              <span className="ok">✔</span> saldo&nbsp;&nbsp;&nbsp;&nbsp;
-              <span className="val">{info.balance}</span> / {info.required} richiesti
+              <span className="ok">✔</span> balance&nbsp;&nbsp;&nbsp;
+              <span className="val">{info.balance}</span> / {info.required} required
             </p>
             <p className="line">
-              {info.eligible ? <span className="ok">✔</span> : <span className="no">✘</span>} idoneo&nbsp;&nbsp;&nbsp;
-              <span className="val">{info.eligible ? 'sì' : 'no'}</span>
+              {info.eligible ? <span className="ok">✔</span> : <span className="no">✘</span>} eligible&nbsp;&nbsp;
+              <span className="val">{info.eligible ? 'yes' : 'no'}</span>
             </p>
             <p className="line">
-              {info.vpnActive ? <span className="ok">●</span> : <span className="no">○</span>} vpn&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <span className="val">{info.vpnActive ? 'attiva' : 'inattiva'}</span>
+              {info.vpnActive ? <span className="ok">●</span> : <span className="no">○</span>} vpn&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span className="val">{info.vpnActive ? 'active' : 'inactive'}</span>
             </p>
 
             {info.eligible && !config && (
               <button className="btn primary" disabled={busy} onClick={activate}>
-                {busy ? 'provisioning…' : '[ attiva vpn ]'}
+                {busy ? 'provisioning…' : '[ activate vpn ]'}
               </button>
             )}
             {!info.eligible && (
               <p className="line warn">
-                ! tieni almeno {info.required} token per sbloccare la rete
+                ! hold at least {info.required} tokens to unlock the network
               </p>
             )}
           </div>
@@ -129,10 +129,10 @@ export default function AccessPanel() {
 
         {config && (
           <div className="readout">
-            <p className="line muted"># wireguard.conf — importa nel client</p>
+            <p className="line muted"># wireguard.conf — import into your client</p>
             <pre className="config">{config}</pre>
             <button className="btn primary" onClick={download}>
-              [ scarica .conf ]
+              [ download .conf ]
             </button>
           </div>
         )}

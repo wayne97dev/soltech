@@ -1,17 +1,17 @@
 /**
- * Smoke test end-to-end del backend.
- * Genera un wallet Solana (ed25519), esegue nonce -> firma -> verifica -> status -> provision,
- * e controlla che una firma sbagliata venga rifiutata.
+ * End-to-end smoke test for the backend.
+ * Generates a Solana wallet (ed25519), runs nonce -> sign -> verify -> status -> provision,
+ * and checks that a bad signature is rejected.
  *
- *   node scripts/smoke.cjs        (con il server avviato su :4000)
+ *   node scripts/smoke.cjs        (with the server running on :4000)
  *
- * Dipende solo da tweetnacl (CommonJS puro), senza @solana/web3.js.
+ * Depends only on tweetnacl (pure CommonJS), no @solana/web3.js.
  */
 const nacl = require('tweetnacl');
 
 const API = process.env.API ?? 'http://127.0.0.1:4000';
 
-// Encoder base58 (stesso alfabeto usato dagli indirizzi Solana).
+// base58 encoder (same alphabet used by Solana addresses).
 const B58 = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
 function base58(bytes) {
   const digits = [0];
@@ -53,30 +53,30 @@ async function main() {
   ).toString('base64');
 
   const verifyRes = await (await post('/auth/verify', { wallet, message, signature })).json();
-  if (!verifyRes.token) throw new Error('verify fallita: ' + JSON.stringify(verifyRes));
+  if (!verifyRes.token) throw new Error('verify failed: ' + JSON.stringify(verifyRes));
   const token = verifyRes.token;
-  console.log('login OK, token ricevuto');
+  console.log('login OK, token received');
 
   const auth = { authorization: `Bearer ${token}` };
   console.log('status:', await (await fetch(`${API}/access/status`, { headers: auth })).json());
 
   const prov = await (await post('/access/provision', null, auth)).json();
-  if (!prov.config) throw new Error('provision non ha restituito una config: ' + JSON.stringify(prov));
-  console.log('\n--- config WireGuard generata ---\n' + prov.config);
+  if (!prov.config) throw new Error('provision did not return a config: ' + JSON.stringify(prov));
+  console.log('\n--- generated WireGuard config ---\n' + prov.config);
 
-  // Negativo: firma di un messaggio diverso ma con un nonce valido -> deve fallire (401).
+  // Negative case: sign a different message but with a valid nonce -> must fail (401).
   const { message: m2 } = await (await post('/auth/nonce', { wallet })).json();
   const badSig = Buffer.from(
-    nacl.sign.detached(new TextEncoder().encode('messaggio diverso'), kp.secretKey),
+    nacl.sign.detached(new TextEncoder().encode('different message'), kp.secretKey),
   ).toString('base64');
   const bad = await post('/auth/verify', { wallet, message: m2, signature: badSig });
-  console.log(`\nfirma errata -> HTTP ${bad.status} (atteso 401)`);
-  if (bad.status !== 401) throw new Error('la firma errata NON e stata rifiutata!');
+  console.log(`\nbad signature -> HTTP ${bad.status} (expected 401)`);
+  if (bad.status !== 401) throw new Error('the bad signature was NOT rejected!');
 
-  console.log('\n✅ SMOKE TEST PASSATO');
+  console.log('\n✅ SMOKE TEST PASSED');
 }
 
 main().catch((e) => {
-  console.error('❌ SMOKE TEST FALLITO:', e);
+  console.error('❌ SMOKE TEST FAILED:', e);
   process.exit(1);
 });
