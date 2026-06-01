@@ -22,7 +22,10 @@ async function main(): Promise<void> {
     }
   });
 
-  await app.register(cors, { origin: config.corsOrigin, credentials: true });
+  // A lone "*" in CORS_ORIGIN means "allow any origin" (handy for early testing).
+  const corsOrigin =
+    config.corsOrigin.length === 1 && config.corsOrigin[0] === '*' ? true : config.corsOrigin;
+  await app.register(cors, { origin: corsOrigin, credentials: true });
   await app.register(jwt, { secret: config.jwtSecret, sign: { expiresIn: config.jwtTtl } });
 
   app.get('/health', async () => ({ ok: true, env: config.nodeEnv }));

@@ -1,0 +1,5 @@
+# unknown0 API — reverse proxy with automatic HTTPS (Let's Encrypt).
+# __DOMAIN__ is substituted by setup.sh (e.g. 213.199.51.59.nip.io or api.yourdomain.com).
+__DOMAIN__ {
+	reverse_proxy localhost:4000
+}
