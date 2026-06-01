@@ -31,7 +31,12 @@
         font-weight: 700;
         letter-spacing: 0.18em;
         margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
       }
+      .logo-mark { display: block; }
       .tag {
         color: var(--muted);
         text-transform: uppercase;
@@ -88,7 +93,7 @@
   </head>
   <body>
     <main>
-      <div class="logo"><span class="mark">◢◣</span> UNKNOWN0</div>
+      <div class="logo"><img src="logo.svg" class="logo-mark" width="44" height="44" alt="" />UNKNOWN0</div>
       <div class="tag">private browser · for holders</div>
 
       <form id="f">

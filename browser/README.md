@@ -23,6 +23,35 @@ npm install
 npm start
 ```
 
+## Build installers (download + desktop icon)
+
+The app packages into native installers — each with the unknown0 icon in the Dock / Start menu — via [electron-builder](https://www.electron.build):
+
+```bash
+cd browser
+npm install
+npm run dist          # build for the current OS → dist/
+# or target one: npm run dist:mac | npm run dist:win | npm run dist:linux
+```
+
+Output lands in `browser/dist/`:
+
+- **macOS** → `.dmg` (drag to Applications; icon appears in the Dock)
+- **Windows** → `.exe` (NSIS installer; Start-menu + desktop shortcut)
+- **Linux** → `.AppImage`
+
+> You build each OS's installer **on that OS** (mac builds mac, etc.), or use CI (GitHub Actions has macOS/Windows/Linux runners) to produce all three at once.
+> The app icon is generated from `build/icon.png` (512×512) — the same U0 globe emblem as the site.
+
+## Holder-gated download
+
+To let **only $UNK0 holders** download the app:
+
+1. Build the installers (above) and host them — e.g. **GitHub Releases**, S3, or your own server.
+2. Add a token-gated **/download** page to the site: the holder connects their wallet → signs (the existing *Sign-in with Solana*) → the backend checks eligibility → it returns the download links (ideally short-lived signed URLs).
+
+This reuses the exact same auth + eligibility as the VPN and Search — no new identity system. (The download page can be scaffolded on request.)
+
 ## Architecture
 
 ```
