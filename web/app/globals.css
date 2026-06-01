@@ -766,3 +766,68 @@ section {
   letter-spacing: 0.1em;
   opacity: 0.7;
 }
+
+/* ---------- Download page ---------- */
+.download-page {
+  padding-top: 130px;
+  padding-bottom: 100px;
+  min-height: 100vh;
+}
+
+.dl-gate {
+  max-width: 560px;
+}
+
+.download-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  max-width: 720px;
+}
+
+.dl-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  border: 1px solid var(--line-soft);
+  border-radius: 12px;
+  padding: 22px 20px;
+  background: var(--panel);
+}
+
+.dl-os {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.dl-sub {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.dl-card .btn {
+  width: 100%;
+}
+
+.dl-soon {
+  width: 100%;
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+  border: 1px dashed var(--line-soft);
+  border-radius: 8px;
+  padding: 11px 14px;
+}
+
+.dl-notice {
+  border-left: 1px solid var(--line-soft);
+  padding-left: 16px;
+}
+
+@media (max-width: 700px) {
+  .download-grid {
+    grid-template-columns: 1fr;
+  }
+}

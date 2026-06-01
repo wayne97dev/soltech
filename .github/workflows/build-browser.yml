@@ -1,0 +1,43 @@
+name: Build browser installers
+
+# Build the unknown0 desktop browser for macOS, Windows and Linux.
+# Triggers on a version tag (e.g. v0.1.0) or manually from the Actions tab.
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: browser
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # `npm install` (not `npm ci`) so it works even if the lockfile predates
+      # the electron-builder devDependency.
+      - run: npm install
+
+      - run: npm run dist
+        env:
+          # Disable code signing for now (unsigned builds are fine for testing).
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: unknown0-${{ matrix.os }}
+          if-no-files-found: warn
+          path: |
+            browser/dist/*.dmg
+            browser/dist/*.exe
+            browser/dist/*.AppImage

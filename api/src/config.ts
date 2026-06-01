@@ -30,4 +30,11 @@ export const config = {
 
   // Search: URL of a self-hosted SearXNG instance. Empty = mock results (dev).
   searxngUrl: process.env.SEARXNG_URL ?? '',
+
+  // Browser installer download URLs (e.g. GitHub Releases). Empty = "coming soon".
+  downloads: {
+    mac: process.env.DOWNLOAD_MAC ?? '',
+    win: process.env.DOWNLOAD_WIN ?? '',
+    linux: process.env.DOWNLOAD_LINUX ?? '',
+  },
 };

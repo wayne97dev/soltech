@@ -75,6 +75,16 @@ export async function search(token: string, q: string): Promise<SearchResponse> 
   );
 }
 
+export interface Downloads {
+  mac: string | null;
+  win: string | null;
+  linux: string | null;
+}
+
+export async function getDownloads(token: string): Promise<Downloads> {
+  return asJson(await fetch(`${API}/download`, { headers: auth(token) }));
+}
+
 function auth(token: string): Record<string, string> {
   return { authorization: `Bearer ${token}` };
 }

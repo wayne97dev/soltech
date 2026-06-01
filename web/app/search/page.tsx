@@ -21,6 +21,7 @@ export default function SearchPage() {
         <nav className="nav-links">
           <Link href="/">home</Link>
           <Link href="/#app">vpn</Link>
+          <Link href="/download">download</Link>
           <Socials />
           <span className="nav-cta nav-current">search</span>
         </nav>

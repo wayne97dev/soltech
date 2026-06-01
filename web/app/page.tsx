@@ -31,6 +31,7 @@ export default function Home() {
           <a href="#features">features</a>
           <a href="#how">how it works</a>
           <Link href="/search">search</Link>
+          <Link href="/download">download</Link>
           <Socials />
           <a className="nav-cta" href="#app">[ launch app ]</a>
         </nav>
