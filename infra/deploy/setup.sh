@@ -43,13 +43,12 @@ else
   git clone "$REPO" "$APP_DIR"
 fi
 
-echo "==> [5/8] Install backend + database"
+echo "==> [5/8] Install backend dependencies"
 cd "$APP_DIR/api"
 npm install
-npm run prisma:generate
-npx prisma migrate deploy
 
-echo "==> [6/8] Backend config (.env)"
+echo "==> [6/8] Backend config (.env) + database"
+# .env must exist BEFORE prisma runs (it reads DATABASE_URL from it).
 if [ ! -f "$APP_DIR/api/.env" ]; then
   cp "$APP_DIR/api/.env.example" "$APP_DIR/api/.env"
   sed -i "s|^JWT_SECRET=.*|JWT_SECRET=$(openssl rand -hex 32)|" "$APP_DIR/api/.env"
@@ -59,6 +58,8 @@ if [ ! -f "$APP_DIR/api/.env" ]; then
 else
   echo "    kept existing $APP_DIR/api/.env"
 fi
+npm run prisma:generate
+npx prisma migrate deploy
 
 echo "==> [7/8] systemd service"
 cp "$APP_DIR/infra/deploy/unknown0-api.service" /etc/systemd/system/unknown0-api.service
