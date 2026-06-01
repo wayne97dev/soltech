@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>SolTech Browser</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="tabstrip">
+      <div id="tabs"></div>
+      <button id="newtab" class="icon-btn" title="New tab">+</button>
+    </div>
+
+    <div id="toolbar">
+      <button id="back" class="icon-btn" title="Back">‹</button>
+      <button id="forward" class="icon-btn" title="Forward">›</button>
+      <button id="reload" class="icon-btn" title="Reload">⟳</button>
+      <div id="omnibox">
+        <span id="lock">🔒</span>
+        <input
+          id="address"
+          type="text"
+          spellcheck="false"
+          autocomplete="off"
+          placeholder="Search SolTech or enter a URL"
+        />
+      </div>
+      <button id="vpn" class="pill" title="Toggle SolTech VPN">VPN: off</button>
+      <div id="shield" class="pill" title="Trackers blocked">⛨ <span id="blocked">0</span></div>
+    </div>
+
+    <div id="views"></div>
+
+    <script src="renderer.js"></script>
+  </body>
+</html>

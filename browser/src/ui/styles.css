@@ -1,0 +1,216 @@
+:root {
+  --bg: #06070a;
+  --chrome: #0b0d12;
+  --line: rgba(255, 255, 255, 0.1);
+  --line-soft: rgba(255, 255, 255, 0.06);
+  --text: #e9ebf2;
+  --muted: #767c8c;
+  --accent: #9db4ff;
+  --green: #5ef2b0;
+  --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 13px;
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Tab strip ---------- */
+#tabstrip {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  padding: 8px 10px 0 84px; /* left pad clears macOS traffic lights */
+  background: var(--chrome);
+  -webkit-app-region: drag;
+}
+
+#tabs {
+  display: flex;
+  gap: 6px;
+  flex: 1;
+  overflow-x: auto;
+  -webkit-app-region: no-drag;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 200px;
+  min-width: 120px;
+  padding: 8px 10px;
+  border: 1px solid var(--line-soft);
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  background: #0e1118;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.tab.active {
+  background: #11151d;
+  color: var(--text);
+  border-color: var(--line);
+}
+
+.tab-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.tab-close {
+  background: none;
+  border: 0;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0 2px;
+}
+
+.tab-close:hover {
+  color: var(--text);
+}
+
+#newtab {
+  -webkit-app-region: no-drag;
+  margin-bottom: 0;
+}
+
+/* ---------- Toolbar ---------- */
+#toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--chrome);
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.icon-btn {
+  background: transparent;
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  color: var(--text);
+  width: 32px;
+  height: 32px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--line);
+}
+
+.icon-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+#omnibox {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 12px;
+  background: #05060a;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+#omnibox:focus-within {
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+#lock {
+  font-size: 11px;
+  opacity: 0.6;
+}
+
+#address {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  outline: none;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 13px;
+}
+
+#address::placeholder {
+  color: var(--muted);
+}
+
+.pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+#vpn {
+  cursor: pointer;
+  color: var(--text);
+}
+
+#vpn.on {
+  color: #06121e;
+  background: var(--green);
+  border-color: var(--green);
+  font-weight: 700;
+}
+
+#blocked {
+  color: var(--green);
+}
+
+/* ---------- Web content ---------- */
+#views {
+  position: relative;
+  flex: 1;
+  background: var(--bg);
+}
+
+.view {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: none;
+}
+
+.view.active {
+  display: flex;
+}

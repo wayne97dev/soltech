@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>SolTech</title>
+    <style>
+      :root {
+        --bg: #06070a;
+        --text: #e9ebf2;
+        --muted: #767c8c;
+        --line: rgba(255, 255, 255, 0.1);
+        --accent: #9db4ff;
+        --green: #5ef2b0;
+        --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: radial-gradient(900px 500px at 50% -10%, #10131c 0%, rgba(16, 19, 28, 0) 60%), var(--bg);
+        color: var(--text);
+        font-family: var(--mono);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      main { width: 100%; max-width: 620px; padding: 24px; text-align: center; }
+      .mark { color: var(--accent); letter-spacing: -2px; }
+      .logo {
+        font-size: 34px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        margin-bottom: 8px;
+      }
+      .tag {
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        font-size: 12px;
+        margin-bottom: 34px;
+      }
+      form {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: #0a0c11;
+        padding: 6px 8px 6px 18px;
+      }
+      form:focus-within { border-color: rgba(255, 255, 255, 0.4); }
+      .prompt { color: var(--accent); font-size: 18px; }
+      input {
+        flex: 1;
+        background: transparent;
+        border: 0;
+        outline: none;
+        color: var(--text);
+        font-family: var(--mono);
+        font-size: 15px;
+        padding: 12px 0;
+      }
+      input::placeholder { color: var(--muted); }
+      button {
+        background: #fff;
+        color: #000;
+        border: 0;
+        border-radius: 8px;
+        padding: 10px 16px;
+        font-family: var(--mono);
+        font-weight: 500;
+        cursor: pointer;
+      }
+      .links {
+        margin-top: 26px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .links a { color: var(--muted); text-decoration: none; }
+      .links a:hover { color: var(--text); }
+      .status {
+        margin-top: 40px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .dot { color: var(--green); }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="logo"><span class="mark">◢◣</span> SOLTECH</div>
+      <div class="tag">private browser · for holders</div>
+
+      <form id="f">
+        <span class="prompt">›</span>
+        <input id="q" placeholder="Search SolTech, privately…" autofocus spellcheck="false" />
+        <button type="submit">search</button>
+      </form>
+
+      <div class="links">
+        <a href="https://github.com/wayne97dev/soltech">github</a> ·
+        <a href="https://www.wireguard.com">vpn</a> ·
+        <a href="https://docs.searxng.org">search</a>
+      </div>
+
+      <div class="status"><span class="dot">●</span> trackers blocked · no logs · token-gated</div>
+    </main>
+
+    <script>
+      // In production, point this at SolTech Search.
+      var SEARCH = 'https://duckduckgo.com/?q=%s';
+      document.getElementById('f').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var q = document.getElementById('q').value.trim();
+        if (q) window.location.href = SEARCH.replace('%s', encodeURIComponent(q));
+      });
+    </script>
+  </body>
+</html>

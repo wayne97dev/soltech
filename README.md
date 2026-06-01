@@ -49,6 +49,8 @@ soltech/
 │   ├── app/                  # Page, providers, global styles
 │   ├── components/           # Globe (animated), BackgroundFX, AccessPanel
 │   └── lib/api.ts            # Backend client
+├── browser/                  # Desktop browser prototype (Electron + Chromium)
+│   └── src/                  # main + preload + UI (tabs, omnibox, tracker blocker)
 ├── infra/README.md           # How to stand up a real WireGuard server
 ├── netlify.toml              # Frontend deploy config (static export from web/)
 └── docker-compose.yml        # Postgres for production
