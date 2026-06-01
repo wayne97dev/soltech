@@ -1,0 +1,45 @@
+// Dev: SQLite (zero setup). Prod: cambia provider in "postgresql" e aggiorna DATABASE_URL.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  wallet    String    @unique
+  createdAt DateTime  @default(now())
+  peers     VpnPeer[]
+}
+
+// Nonce usa-e-getta per il login Sign-in with Solana (anti-replay).
+model AuthNonce {
+  id        String   @id @default(cuid())
+  wallet    String
+  nonce     String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([wallet])
+}
+
+model VpnPeer {
+  id        String @id @default(cuid())
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+
+  publicKey  String  @unique
+  // NB: in questo MVP conserviamo la chiave privata per rimostrare la config.
+  // Vedi note di sicurezza nel README (evoluzione: keygen lato client).
+  privateKey String
+  address    String  @unique // IP assegnato al client, es. "10.8.0.2/32"
+  active     Boolean @default(true)
+
+  lastVerifiedAt DateTime @default(now())
+  createdAt      DateTime @default(now())
+
+  @@index([userId])
+}
