@@ -24,7 +24,7 @@ export default function Home() {
 
       <header className="nav">
         <a className="brand" href="#top">
-          <span className="brand-mark">◢◣</span> UNKNOWN0<span className="brand-cursor">█</span>
+          <img src="/logo.svg" alt="" className="brand-logo" width={26} height={26} />UNKNOWN0<span className="brand-cursor">█</span>
         </a>
         <nav className="nav-links">
           <a href="#features">features</a>
@@ -118,7 +118,7 @@ export default function Home() {
         </div>
         <div className="footer-row">
           <span className="brand">
-            <span className="brand-mark">◢◣</span> UNKNOWN0
+            <img src="/logo.svg" alt="" className="brand-logo" width={22} height={22} />UNKNOWN0
           </span>
           <span className="footer-links">
             <a href="https://github.com/wayne97dev/soltech" target="_blank" rel="noreferrer">
