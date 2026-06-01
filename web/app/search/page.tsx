@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import BackgroundFX from '../../components/BackgroundFX';
 import SearchApp from '../../components/SearchApp';
+import Socials from '../../components/Socials';
 
 export const metadata: Metadata = {
   title: 'unknown0 Search — private, no-logs search',
@@ -20,6 +21,7 @@ export default function SearchPage() {
         <nav className="nav-links">
           <Link href="/">home</Link>
           <Link href="/#app">vpn</Link>
+          <Socials />
           <span className="nav-cta nav-current">search</span>
         </nav>
       </header>

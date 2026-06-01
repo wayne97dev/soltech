@@ -2,6 +2,7 @@ import Link from 'next/link';
 import BackgroundFX from '../components/BackgroundFX';
 import Globe from '../components/Globe';
 import AccessPanel from '../components/AccessPanel';
+import Socials from '../components/Socials';
 
 const FEATURES = [
   { n: '01', t: 'TOKEN-GATED', d: 'Access tied to token ownership. No cards, no subscriptions.' },
@@ -30,6 +31,7 @@ export default function Home() {
           <a href="#features">features</a>
           <a href="#how">how it works</a>
           <Link href="/search">search</Link>
+          <Socials />
           <a className="nav-cta" href="#app">[ launch app ]</a>
         </nav>
       </header>
@@ -120,13 +122,7 @@ export default function Home() {
           <span className="brand">
             <img src="/logo.svg" alt="" className="brand-logo" width={22} height={22} />UNKNOWN0
           </span>
-          <span className="footer-links">
-            <a href="https://github.com/wayne97dev/soltech" target="_blank" rel="noreferrer">
-              github
-            </a>
-            <a href="#features">features</a>
-            <a href="#app">access</a>
-          </span>
+          <Socials />
           <span className="footer-meta">built on Solana · © 2026</span>
         </div>
       </footer>

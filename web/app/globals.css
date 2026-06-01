@@ -128,6 +128,41 @@ a {
   border-color: var(--white);
 }
 
+/* ---------- Social / contract links ---------- */
+.socials {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 32px;
+  min-width: 32px;
+  padding: 0 9px;
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.social:hover {
+  color: var(--text);
+  border-color: var(--line);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.social svg {
+  display: block;
+}
+
 /* ---------- Layout ---------- */
 .page {
   position: relative;
@@ -589,7 +624,7 @@ section {
   .nav-links {
     gap: 16px;
   }
-  .nav-links a:not(.nav-cta) {
+  .nav-links > a:not(.nav-cta) {
     display: none;
   }
   .page,
