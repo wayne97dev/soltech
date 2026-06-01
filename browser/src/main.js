@@ -95,6 +95,6 @@ ipcMain.handle('privacy:toggleBlocker', (_event, on) => {
 ipcMain.handle('vpn:toggle', (_event, on) => {
   vpnOn = Boolean(on);
   // PROTOTYPE: this only flips a flag. Real integration brings up/down the
-  // system WireGuard tunnel (the SolTech VPN) — see browser/README.md.
+  // system WireGuard tunnel (the unknown0 VPN) — see browser/README.md.
   return vpnOn;
 });

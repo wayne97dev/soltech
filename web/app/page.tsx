@@ -24,7 +24,7 @@ export default function Home() {
 
       <header className="nav">
         <a className="brand" href="#top">
-          <span className="brand-mark">◢◣</span> SOLTECH<span className="brand-cursor">█</span>
+          <span className="brand-mark">◢◣</span> UNKNOWN0<span className="brand-cursor">█</span>
         </a>
         <nav className="nav-links">
           <a href="#features">features</a>
@@ -38,14 +38,14 @@ export default function Home() {
         {/* HERO */}
         <section className="hero">
           <div className="hero-copy">
-            <p className="eyebrow">// VPN ON-CHAIN · SOLANA</p>
+            <p className="eyebrow">// VPN ON-CHAIN · $UNK0 · SOLANA</p>
             <h1 className="title">
               The private network
               <br />
               you <span className="under">own</span>.
             </h1>
             <p className="lead">
-              Fast, encrypted, no-logs VPN — free for SolTech token holders.
+              Fast, encrypted, no-logs VPN — free for $UNK0 holders.
               No subscriptions: hold the token, own the network.
             </p>
             <div className="cta-row">
@@ -65,7 +65,7 @@ export default function Home() {
 
         {/* FEATURES */}
         <section id="features" className="features">
-          <p className="section-label">// why SolTech</p>
+          <p className="section-label">// why unknown0</p>
           <div className="feature-grid">
             {FEATURES.map((f) => (
               <article key={f.n} className="feature">
@@ -118,7 +118,7 @@ export default function Home() {
         </div>
         <div className="footer-row">
           <span className="brand">
-            <span className="brand-mark">◢◣</span> SOLTECH
+            <span className="brand-mark">◢◣</span> UNKNOWN0
           </span>
           <span className="footer-links">
             <a href="https://github.com/wayne97dev/soltech" target="_blank" rel="noreferrer">

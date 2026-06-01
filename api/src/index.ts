@@ -33,7 +33,7 @@ async function main(): Promise<void> {
   startReverifyWorker();
 
   await app.listen({ port: config.port, host: '0.0.0.0' });
-  app.log.info(`SolTech API listening on :${config.port}`);
+  app.log.info(`unknown0 API listening on :${config.port}`);
 }
 
 main().catch((err) => {

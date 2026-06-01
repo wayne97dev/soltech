@@ -1,7 +1,7 @@
 import nacl from 'tweetnacl';
 import { PublicKey } from '@solana/web3.js';
 
-const DOMAIN = 'SolTech VPN';
+const DOMAIN = 'unknown0 VPN';
 
 /** Builds the human-readable message the user will sign in their wallet. */
 export function buildSignInMessage(wallet: string, nonce: string, issuedAt: string): string {

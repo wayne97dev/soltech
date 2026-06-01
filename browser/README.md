@@ -1,8 +1,8 @@
-# SolTech Browser (prototype)
+# unknown0 Browser (prototype)
 
-A privacy browser for SolTech holders, built on **Electron** (so the rendering engine is Chromium — the same engine as Chrome, Brave, Arc, Opera and Edge). You don't write a browser engine from scratch; you build a branded shell + features on top of one. This is that shell.
+A privacy browser for unknown0 holders, built on **Electron** (so the rendering engine is Chromium — the same engine as Chrome, Brave, Arc, Opera and Edge). You don't write a browser engine from scratch; you build a branded shell + features on top of one. This is that shell.
 
-> Status: **prototype**. It already browses, but the SolTech integrations (real VPN, embedded wallet) are stubs/hooks — see the roadmap.
+> Status: **prototype**. It already browses, but the unknown0 integrations (real VPN, embedded wallet) are stubs/hooks — see the roadmap.
 
 ## What works today
 
@@ -33,7 +33,7 @@ browser/
     ├── preload.js        # Safe contextBridge API exposed to the UI
     └── ui/
         ├── index.html    # Browser chrome: tab strip + toolbar + <webview> container
-        ├── styles.css    # SolTech dark/monospace theme for the chrome
+        ├── styles.css    # unknown0 dark/monospace theme for the chrome
         ├── renderer.js   # Tab management, omnibox, navigation
         └── newtab.html   # Branded start page (loaded into each new tab)
 ```
@@ -42,8 +42,8 @@ Each tab is a Chromium `<webview>`. The chrome (toolbar/tabs) is the host page; 
 
 ## Roadmap → a real product
 
-- **Default search → SolTech Search.** Change the `SEARCH` constant in [renderer.js](src/ui/renderer.js) and [newtab.html](src/ui/newtab.html) to your deployed search URL (`.../search/?q=%s`).
-- **VPN toggle → the real tunnel.** The `vpn:toggle` IPC handler in [main.js](src/main.js) currently just flips a flag. Wire it to bring the system **WireGuard** tunnel (the SolTech VPN) up/down.
+- **Default search → unknown0 Search.** Change the `SEARCH` constant in [renderer.js](src/ui/renderer.js) and [newtab.html](src/ui/newtab.html) to your deployed search URL (`.../search/?q=%s`).
+- **VPN toggle → the real tunnel.** The `vpn:toggle` IPC handler in [main.js](src/main.js) currently just flips a flag. Wire it to bring the system **WireGuard** tunnel (the unknown0 VPN) up/down.
 - **Embedded Solana wallet** → token-gate premium features (free for holders), reusing the Sign-in-with-Solana flow from the web app.
 - **Maintained blocklist** (EasyList) instead of the built-in starter list.
 - **History, bookmarks, settings, downloads, find-in-page.**

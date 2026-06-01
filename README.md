@@ -1,6 +1,6 @@
-# SolTech VPN
+# unknown0 VPN
 
-A fast, private VPN that is **free only for holders of the SolTech token** (an SPL token on Solana, launched via pump.fun).
+A fast, private VPN that is **free only for holders of the $UNK0 token** (the unknown0 SPL token on Solana, launched via pump.fun).
 Access is tied to token ownership: hold the token and you keep the VPN; sell below the threshold and access is revoked automatically.
 
 > Status: **MVP** — web portal (frontend + backend) + self-hosted WireGuard. The token and the extra features come later.
@@ -33,7 +33,7 @@ Access is tied to token ownership: hold the token and you keep the VPN; sell bel
 ## Repository structure
 
 ```
-soltech/
+unknown0/
 ├── api/                      # Backend — Fastify + TypeScript
 │   ├── prisma/               # Database schema (SQLite in dev, Postgres in prod)
 │   ├── scripts/smoke.cjs     # End-to-end smoke test
@@ -157,7 +157,7 @@ npm start            # = tsx src/index.ts
 ## Switching to Postgres (production)
 
 1. In `api/prisma/schema.prisma`, change `provider = "sqlite"` to `provider = "postgresql"`.
-2. In `api/.env`, set `DATABASE_URL=postgresql://soltech:soltech@localhost:5432/soltech?schema=public`.
+2. In `api/.env`, set `DATABASE_URL=postgresql://unknown0:unknown0@localhost:5432/unknown0?schema=public`.
 3. Start the DB with `docker compose up -d` (uses the included `docker-compose.yml`) and run `npm run prisma:migrate`.
 
 ---

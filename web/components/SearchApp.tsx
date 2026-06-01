@@ -71,17 +71,17 @@ export default function SearchApp() {
           <span className="dot" />
           <span className="dot" />
           <span className="dot" />
-          <span className="terminal-title">soltech — private search</span>
+          <span className="terminal-title">unknown0 — private search</span>
         </div>
         <div className="terminal-body">
           <p className="line">
-            <span className="prompt">soltech@search</span>
+            <span className="prompt">unknown0@search</span>
             <span className="sep">:</span>
             <span className="path">~</span>
             <span className="sep">$</span> auth required
           </p>
           <p className="line muted">
-            Sign in with your wallet to search privately. Free for SolTech holders.
+            Sign in with your wallet to search privately. Free for unknown0 holders.
           </p>
           <div className="terminal-actions">
             <WalletMultiButton />

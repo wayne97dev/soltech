@@ -57,7 +57,7 @@ export async function search(query: string): Promise<SearchResponse> {
 function mockSearch(q: string): SearchResponse {
   const results: SearchResult[] = [
     {
-      title: 'SolTech VPN — private, token-gated VPN',
+      title: 'unknown0 VPN — private, token-gated VPN',
       url: 'https://github.com/wayne97dev/soltech',
       content: `Demo results for “${q}”. SearXNG is not configured yet (set SEARXNG_URL). Once connected, this returns real, aggregated, no-log results.`,
       engine: 'mock',
@@ -65,13 +65,13 @@ function mockSearch(q: string): SearchResponse {
     {
       title: 'WireGuard — fast, modern VPN protocol',
       url: 'https://www.wireguard.com',
-      content: 'Lean, secure VPN tunnelling — the protocol SolTech uses for the encrypted connection.',
+      content: 'Lean, secure VPN tunnelling — the protocol unknown0 uses for the encrypted connection.',
       engine: 'mock',
     },
     {
       title: 'Solana',
       url: 'https://solana.com',
-      content: 'High-performance blockchain. SolTech reads token balances here to gate access.',
+      content: 'High-performance blockchain. unknown0 reads token balances here to gate access.',
       engine: 'mock',
     },
     {

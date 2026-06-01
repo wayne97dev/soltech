@@ -3,9 +3,9 @@ import './globals.css';
 import { Providers } from './providers';
 
 export const metadata: Metadata = {
-  title: 'SolTech VPN — the private network you own',
+  title: 'unknown0 VPN — the private network you own',
   description:
-    'Fast, encrypted, no-logs VPN, free for holders of the SolTech token on Solana. Hold the token, own the network.',
+    'Fast, encrypted, no-logs VPN, free for holders of the unknown0 token on Solana. Hold the token, own the network.',
 };
 
 export const viewport: Viewport = {

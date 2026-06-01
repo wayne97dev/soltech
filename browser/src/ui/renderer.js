@@ -1,4 +1,4 @@
-// SolTech Browser — tab + navigation logic (runs in the chrome UI renderer).
+// unknown0 Browser — tab + navigation logic (runs in the chrome UI renderer).
 
 const views = document.getElementById('views');
 const tabsEl = document.getElementById('tabs');
@@ -8,8 +8,8 @@ const fwdBtn = document.getElementById('forward');
 
 const NEWTAB = 'newtab.html';
 
-// Default search engine. In production, point this at SolTech Search, e.g.:
-//   const SEARCH = 'https://your-soltech-site/search/?q=%s';
+// Default search engine. In production, point this at unknown0 Search, e.g.:
+//   const SEARCH = 'https://your-unknown0-site/search/?q=%s';
 const SEARCH = 'https://duckduckgo.com/?q=%s';
 
 const tabs = [];
@@ -205,12 +205,12 @@ document.getElementById('reload').addEventListener('click', () => {
 });
 document.getElementById('newtab').addEventListener('click', () => createTab(NEWTAB));
 
-// --- SolTech VPN toggle (prototype) ---
+// --- unknown0 VPN toggle (prototype) ---
 let vpnOn = false;
 const vpnBtn = document.getElementById('vpn');
 vpnBtn.addEventListener('click', async () => {
   try {
-    vpnOn = await window.soltech.toggleVpn(!vpnOn);
+    vpnOn = await window.unknown0.toggleVpn(!vpnOn);
   } catch {
     vpnOn = !vpnOn;
   }
@@ -219,8 +219,8 @@ vpnBtn.addEventListener('click', async () => {
 });
 
 // --- Tracker blocker counter ---
-if (window.soltech && window.soltech.onBlocked) {
-  window.soltech.onBlocked((n) => {
+if (window.unknown0 && window.unknown0.onBlocked) {
+  window.unknown0.onBlocked((n) => {
     document.getElementById('blocked').textContent = String(n);
   });
 }

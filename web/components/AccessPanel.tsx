@@ -49,7 +49,7 @@ export default function AccessPanel() {
     const url = URL.createObjectURL(new Blob([config], { type: 'text/plain' }));
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'soltech-vpn.conf';
+    a.download = 'unknown0-vpn.conf';
     a.click();
     URL.revokeObjectURL(url);
   }
@@ -62,12 +62,12 @@ export default function AccessPanel() {
         <span className="dot" />
         <span className="dot" />
         <span className="dot" />
-        <span className="terminal-title">soltech — secure shell</span>
+        <span className="terminal-title">unknown0 — secure shell</span>
       </div>
 
       <div className="terminal-body">
         <p className="line">
-          <span className="prompt">soltech@vpn</span>
+          <span className="prompt">unknown0@vpn</span>
           <span className="sep">:</span>
           <span className="path">~</span>
           <span className="sep">$</span> ./connect

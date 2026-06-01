@@ -5,15 +5,15 @@ services:
     image: postgres:16
     restart: unless-stopped
     environment:
-      POSTGRES_USER: soltech
-      POSTGRES_PASSWORD: soltech
-      POSTGRES_DB: soltech
+      POSTGRES_USER: unknown0
+      POSTGRES_PASSWORD: unknown0
+      POSTGRES_DB: unknown0
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
 
-  # Privacy meta-search engine behind SolTech Search.
+  # Privacy meta-search engine behind unknown0 Search.
   # Set SEARXNG_URL=http://localhost:8080 in api/.env, and enable the JSON API
   # (search.formats: [html, json]) in infra/searxng/settings.yml — see infra/README.md.
   searxng:

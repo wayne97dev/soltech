@@ -1,6 +1,6 @@
 import { getNonce, verify } from './api';
 
-const TOKEN_KEY = 'soltech.token';
+const TOKEN_KEY = 'unknown0.token';
 
 export function loadToken(): string | null {
   if (typeof window === 'undefined') return null;

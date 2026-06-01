@@ -4,8 +4,8 @@ import BackgroundFX from '../../components/BackgroundFX';
 import SearchApp from '../../components/SearchApp';
 
 export const metadata: Metadata = {
-  title: 'SolTech Search — private, no-logs search',
-  description: 'Private metasearch for SolTech holders. No tracking, no ads, no logs.',
+  title: 'unknown0 Search — private, no-logs search',
+  description: 'Private metasearch for unknown0 holders. No tracking, no ads, no logs.',
 };
 
 export default function SearchPage() {
@@ -15,7 +15,7 @@ export default function SearchPage() {
 
       <header className="nav">
         <Link className="brand" href="/">
-          <span className="brand-mark">◢◣</span> SOLTECH<span className="brand-cursor">█</span>
+          <span className="brand-mark">◢◣</span> UNKNOWN0<span className="brand-cursor">█</span>
         </Link>
         <nav className="nav-links">
           <Link href="/">home</Link>
@@ -27,11 +27,11 @@ export default function SearchPage() {
       <main className="page search-page">
         <p className="eyebrow">// PRIVATE SEARCH · NO LOGS</p>
         <h1 className="search-heading">
-          SolTech <span className="under">Search</span>
+          unknown0 <span className="under">Search</span>
         </h1>
         <p className="lead search-lead">
           Private metasearch, aggregated from 70+ sources. No tracking, no ads, no logs — free for
-          SolTech holders.
+          unknown0 holders.
         </p>
         <SearchApp />
       </main>
