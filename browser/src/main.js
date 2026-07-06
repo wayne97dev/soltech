@@ -1,6 +1,14 @@
 const { app, BrowserWindow, session, ipcMain } = require('electron');
 const path = require('node:path');
 
+// Known benign Electron race with <webview> navigation: a render frame can be
+// disposed before Electron reads its info. Swallow it instead of popping a crash dialog.
+process.on('uncaughtException', (err) => {
+  const msg = err && err.message ? err.message : String(err);
+  if (msg.includes('Render frame was disposed') || msg.includes('WebFrameMain')) return;
+  console.error('[main] uncaughtException:', err);
+});
+
 // Minimal tracker/ad blocklist (prototype). A real build uses a maintained list
 // like EasyList. This already makes the browser meaningfully more private.
 const BLOCKED_HOSTS = [
