@@ -120,6 +120,7 @@ a {
   padding: 7px 14px;
   border-radius: 6px;
   transition: all 0.15s ease;
+  white-space: nowrap;
 }
 
 .nav-cta:hover {
@@ -344,6 +345,46 @@ section {
   color: var(--muted);
   font-size: 13.5px;
   margin: 0;
+}
+
+/* ---------- Products ---------- */
+.products {
+  padding: 0 0 110px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.product {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  border: 1px solid var(--line-soft);
+  border-radius: 12px;
+  padding: 24px 22px 22px;
+  background: var(--panel);
+  transition: border-color 0.18s ease, transform 0.18s ease;
+}
+
+.product:hover {
+  border-color: var(--line);
+  transform: translateY(-3px);
+}
+
+.product-cta {
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--accent);
+}
+
+@media (max-width: 900px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ---------- How ---------- */
@@ -596,6 +637,14 @@ section {
 }
 
 /* ---------- Responsive ---------- */
+@media (max-width: 960px) {
+  /* the nav has many entries now — below ~960px keep only logo, socials and CTA */
+  .nav-links > a:not(.nav-cta),
+  .nav-links > span.nav-current {
+    display: none;
+  }
+}
+
 @media (max-width: 900px) {
   .hero {
     grid-template-columns: 1fr;
@@ -623,9 +672,6 @@ section {
   }
   .nav-links {
     gap: 16px;
-  }
-  .nav-links > a:not(.nav-cta) {
-    display: none;
   }
   .page,
   .footer {

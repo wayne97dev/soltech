@@ -4,6 +4,30 @@ import Globe from '../components/Globe';
 import AccessPanel from '../components/AccessPanel';
 import Socials from '../components/Socials';
 
+const PRODUCTS = [
+  {
+    n: '01',
+    t: 'VPN',
+    d: 'Encrypted WireGuard tunnel. Hold the token, get the network — no subscriptions.',
+    href: '#app',
+    cta: 'activate →',
+  },
+  {
+    n: '02',
+    t: 'SEARCH',
+    d: 'Private metasearch across 70+ sources. No tracking, no ads, no logs.',
+    href: '/search',
+    cta: 'search →',
+  },
+  {
+    n: '03',
+    t: 'BROWSER',
+    d: 'Our desktop browser: tracker blocking, unknown0 Search built in, one-click VPN. mac · win · linux.',
+    href: '/download',
+    cta: 'download →',
+  },
+];
+
 const FEATURES = [
   { n: '01', t: 'TOKEN-GATED', d: 'Access tied to token ownership. No cards, no subscriptions.' },
   { n: '02', t: 'ZERO LOG', d: 'No traffic logs. Your activity stays yours alone.' },
@@ -77,6 +101,31 @@ export default function Home() {
                 <p className="feature-d">{f.d}</p>
               </article>
             ))}
+          </div>
+        </section>
+
+        {/* PRODUCTS */}
+        <section id="products" className="products">
+          <p className="section-label">// the suite</p>
+          <h2 className="section-title">One token. The whole privacy stack.</h2>
+          <div className="product-grid">
+            {PRODUCTS.map((p) =>
+              p.href.startsWith('/') ? (
+                <Link key={p.n} className="product" href={p.href}>
+                  <span className="feature-n">{p.n}</span>
+                  <h3 className="feature-t">{p.t}</h3>
+                  <p className="feature-d">{p.d}</p>
+                  <span className="product-cta">{p.cta}</span>
+                </Link>
+              ) : (
+                <a key={p.n} className="product" href={p.href}>
+                  <span className="feature-n">{p.n}</span>
+                  <h3 className="feature-t">{p.t}</h3>
+                  <p className="feature-d">{p.d}</p>
+                  <span className="product-cta">{p.cta}</span>
+                </a>
+              ),
+            )}
           </div>
         </section>
 

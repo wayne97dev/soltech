@@ -7,6 +7,9 @@ on:
     tags: ['v*']
   workflow_dispatch:
 
+permissions:
+  contents: write # lets the workflow publish the GitHub Release
+
 jobs:
   build:
     strategy:
@@ -38,6 +41,17 @@ jobs:
           name: unknown0-${{ matrix.os }}
           if-no-files-found: warn
           path: |
+            browser/dist/*.dmg
+            browser/dist/*.exe
+            browser/dist/*.AppImage
+
+      # On a version tag, publish the installers as a GitHub Release
+      # (each OS job appends its own asset to the same release).
+      - name: Publish release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
             browser/dist/*.dmg
             browser/dist/*.exe
             browser/dist/*.AppImage

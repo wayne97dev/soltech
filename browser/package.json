@@ -19,6 +19,7 @@
   "build": {
     "appId": "io.unknown0.browser",
     "productName": "unknown0",
+    "artifactName": "${productName}-${version}-${os}.${ext}",
     "directories": {
       "output": "dist",
       "buildResources": "build"
