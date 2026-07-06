@@ -1,6 +1,6 @@
 {
   "name": "unknown0-browser",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "unknown0 — a privacy browser for token holders (prototype)",
   "author": "unknown0",
@@ -20,6 +20,7 @@
     "appId": "io.unknown0.browser",
     "productName": "unknown0",
     "artifactName": "${productName}-${version}-${os}.${ext}",
+    "asar": false,
     "directories": {
       "output": "dist",
       "buildResources": "build"
