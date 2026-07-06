@@ -3,6 +3,16 @@
 Minimal guide to stand up a WireGuard exit node on an Ubuntu 22.04+ VPS.
 The backend (`api`, with `WIREGUARD_PROVIDER=local`) runs on **this same host** and manages peers by running `wg`.
 
+## Quick (one command)
+
+On the deployed server (after `setup.sh`):
+
+```bash
+cd /opt/unknown0 && bash infra/deploy/vpn.sh
+```
+
+It generates the server keys, writes `/etc/wireguard/wg0.conf` (NAT included), starts the tunnel, switches the backend to `WIREGUARD_PROVIDER=local` with the right endpoint/pubkey, and re-syncs any existing DB peers into `wg0`. The steps below are the manual equivalent.
+
 ## 1. Install
 
 ```bash
