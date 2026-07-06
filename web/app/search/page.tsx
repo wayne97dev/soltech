@@ -28,14 +28,6 @@ export default function SearchPage() {
       </header>
 
       <main className="page search-page">
-        <p className="eyebrow">// PRIVATE SEARCH · NO LOGS</p>
-        <h1 className="search-heading">
-          unknown0 <span className="under">Search</span>
-        </h1>
-        <p className="lead search-lead">
-          Private metasearch, aggregated from 70+ sources. No tracking, no ads, no logs — free for
-          unknown0 holders.
-        </p>
         <SearchApp />
       </main>
     </>

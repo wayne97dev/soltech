@@ -1,53 +1,66 @@
 import { config } from './config';
 
+export type SearchCategory = 'general' | 'images' | 'news' | 'videos';
+
 export interface SearchResult {
   title: string;
   url: string;
   content: string;
   engine: string;
+  img?: string; // thumbnail (for images/videos)
 }
 
 export interface SearchResponse {
   query: string;
+  category: SearchCategory;
   results: SearchResult[];
   number_of_results: number;
   source: 'searxng' | 'mock';
 }
 
+const CATEGORIES: SearchCategory[] = ['general', 'images', 'news', 'videos'];
+
 /**
  * Runs a query against a self-hosted SearXNG instance (privacy meta-search).
  * If SEARXNG_URL is not configured, returns demo results so the UI works in dev.
  */
-export async function search(query: string): Promise<SearchResponse> {
+export async function search(query: string, categoryInput?: string): Promise<SearchResponse> {
   const q = query.trim();
-  if (!q) {
-    return { query: q, results: [], number_of_results: 0, source: config.searxngUrl ? 'searxng' : 'mock' };
-  }
+  const category: SearchCategory = CATEGORIES.includes(categoryInput as SearchCategory)
+    ? (categoryInput as SearchCategory)
+    : 'general';
 
+  if (!q) {
+    return { query: q, category, results: [], number_of_results: 0, source: config.searxngUrl ? 'searxng' : 'mock' };
+  }
   if (!config.searxngUrl) {
-    return mockSearch(q);
+    return { ...mockSearch(q), category };
   }
 
   const url = new URL('/search', config.searxngUrl);
   url.searchParams.set('q', q);
   url.searchParams.set('format', 'json');
+  url.searchParams.set('categories', category);
 
   const res = await fetch(url, { headers: { accept: 'application/json' } });
   if (!res.ok) throw new Error(`searxng responded ${res.status}`);
 
   const data = (await res.json()) as { results?: unknown[]; number_of_results?: number };
-  const results: SearchResult[] = (data.results ?? []).slice(0, 20).map((r) => {
+  const results: SearchResult[] = (data.results ?? []).slice(0, 30).map((r) => {
     const item = r as Record<string, unknown>;
+    const thumb = item.thumbnail_src ?? item.thumbnail ?? item.img_src;
     return {
       title: String(item.title ?? ''),
       url: String(item.url ?? ''),
       content: String(item.content ?? ''),
       engine: String(item.engine ?? ''),
+      img: thumb ? String(thumb) : undefined,
     };
   });
 
   return {
     query: q,
+    category,
     results,
     number_of_results: data.number_of_results ?? results.length,
     source: 'searxng',
@@ -57,8 +70,8 @@ export async function search(query: string): Promise<SearchResponse> {
 function mockSearch(q: string): SearchResponse {
   const results: SearchResult[] = [
     {
-      title: 'unknown0 VPN — private, token-gated VPN',
-      url: 'https://github.com/wayne97dev/soltech',
+      title: 'unknown0 — private VPN, search and browser',
+      url: 'https://unknown0.net',
       content: `Demo results for “${q}”. SearXNG is not configured yet (set SEARXNG_URL). Once connected, this returns real, aggregated, no-log results.`,
       engine: 'mock',
     },
@@ -69,17 +82,11 @@ function mockSearch(q: string): SearchResponse {
       engine: 'mock',
     },
     {
-      title: 'Solana',
-      url: 'https://solana.com',
-      content: 'High-performance blockchain. unknown0 reads token balances here to gate access.',
-      engine: 'mock',
-    },
-    {
       title: 'SearXNG — privacy-respecting metasearch engine',
       url: 'https://docs.searxng.org',
       content: 'Open-source metasearch that aggregates 70+ sources with no tracking, ads, or logs.',
       engine: 'mock',
     },
   ];
-  return { query: q, results, number_of_results: results.length, source: 'mock' };
+  return { query: q, category: 'general', results, number_of_results: results.length, source: 'mock' };
 }

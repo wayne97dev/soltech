@@ -55,23 +55,28 @@ export async function provision(token: string): Promise<VpnConfig> {
   );
 }
 
+export type SearchCategory = 'general' | 'images' | 'news' | 'videos';
+
 export interface SearchResult {
   title: string;
   url: string;
   content: string;
   engine: string;
+  img?: string;
 }
 
 export interface SearchResponse {
   query: string;
+  category: SearchCategory;
   results: SearchResult[];
   number_of_results: number;
   source: string;
 }
 
-export async function search(token: string, q: string): Promise<SearchResponse> {
+// Public: no token needed. unknown0 Search is open.
+export async function search(q: string, category: SearchCategory = 'general'): Promise<SearchResponse> {
   return asJson(
-    await fetch(`${API}/search?q=${encodeURIComponent(q)}`, { headers: auth(token) }),
+    await fetch(`${API}/search?q=${encodeURIComponent(q)}&category=${category}`),
   );
 }
 
