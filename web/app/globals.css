@@ -454,7 +454,6 @@ section {
   border: 1px solid var(--line);
   border-radius: 12px;
   background: var(--bg-2);
-  overflow: hidden;
   box-shadow: 0 30px 80px -40px rgba(0, 0, 0, 0.9);
 }
 
@@ -465,6 +464,7 @@ section {
   padding: 12px 16px;
   border-bottom: 1px solid var(--line-soft);
   background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px 12px 0 0;
 }
 
 .terminal-bar .dot {
@@ -622,6 +622,24 @@ section {
 
 .wallet-adapter-button-trigger {
   background: transparent !important;
+}
+
+.wallet-adapter-dropdown-list {
+  background: var(--bg-2) !important;
+  border: 1px solid var(--line) !important;
+  box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.9) !important;
+}
+
+.wallet-adapter-dropdown-list-item {
+  font-family: var(--mono) !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: var(--text) !important;
+  border-radius: 6px !important;
+}
+
+.wallet-adapter-dropdown-list-item:not([disabled]):hover {
+  background: rgba(255, 255, 255, 0.06) !important;
 }
 
 /* ---------- Animations ---------- */
