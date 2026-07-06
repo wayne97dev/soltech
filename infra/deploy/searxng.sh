@@ -9,7 +9,14 @@ APP_DIR="${APP_DIR:-/opt/unknown0}"
 SEARX_DIR="$APP_DIR/infra/searxng"
 PORT="${PORT:-8080}"
 
-command -v docker >/dev/null || { echo "Docker not found — run infra/deploy/setup.sh first."; exit 1; }
+# Install Docker if missing (fresh VPS).
+if ! command -v docker >/dev/null; then
+  echo "==> Installing Docker"
+  export DEBIAN_FRONTEND=noninteractive
+  apt-get update -y
+  apt-get install -y docker.io
+  systemctl enable --now docker
+fi
 
 mkdir -p "$SEARX_DIR"
 
