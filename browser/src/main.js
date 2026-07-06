@@ -35,6 +35,13 @@ let blockedCount = 0;
 let vpnOn = false;
 let mainWindow = null;
 
+// unknown0 VPN for the browser: route the app's traffic through a SOCKS5 proxy on our
+// server — per-app, like Tor Browser (hides your IP for browsing without touching the
+// rest of the system). Prototype: shared credentials; a real build issues them per holder.
+const VPN_PROXY = 'socks5://144.91.104.144:1080';
+const VPN_USER = 'unknown0';
+const VPN_PASS = 'unknown0-beta';
+
 function isBlocked(url) {
   try {
     const host = new URL(url).hostname;
@@ -90,6 +97,14 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
 
+// Supply the proxy credentials when the VPN proxy asks for authentication.
+app.on('login', (event, _webContents, _request, authInfo, callback) => {
+  if (authInfo && authInfo.isProxy) {
+    event.preventDefault();
+    callback(VPN_USER, VPN_PASS);
+  }
+});
+
 ipcMain.handle('app:versions', () => ({
   electron: process.versions.electron,
   chrome: process.versions.chrome,
@@ -101,9 +116,15 @@ ipcMain.handle('privacy:toggleBlocker', (_event, on) => {
   return blockerEnabled;
 });
 
-ipcMain.handle('vpn:toggle', (_event, on) => {
+ipcMain.handle('vpn:toggle', async (_event, on) => {
   vpnOn = Boolean(on);
-  // PROTOTYPE: this only flips a flag. Real integration brings up/down the
-  // system WireGuard tunnel (the unknown0 VPN) — see browser/README.md.
+  const ses = session.defaultSession;
+  // Route (or stop routing) the whole app — including every tab's <webview> —
+  // through the unknown0 server. Your browsing exits from the server's IP.
+  if (vpnOn) {
+    await ses.setProxy({ proxyRules: VPN_PROXY });
+  } else {
+    await ses.setProxy({ mode: 'direct' });
+  }
   return vpnOn;
 });
