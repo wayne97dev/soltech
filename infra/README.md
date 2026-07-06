@@ -79,6 +79,16 @@ WG_DNS=1.1.1.1
 
 unknown0 Search proxies a self-hosted [SearXNG](https://docs.searxng.org) instance — a privacy metasearch engine that aggregates 70+ sources with no tracking, ads, or logs. The backend enforces token-gating and forwards queries to it.
 
+## Quick (one command)
+
+On the deployed server (after `setup.sh`):
+
+```bash
+cd /opt/unknown0 && bash infra/deploy/searxng.sh
+```
+
+It writes a SearXNG config (JSON API enabled), runs the container on `127.0.0.1:8080`, points `SEARXNG_URL` at it and restarts the backend. Search then returns real aggregated results. The steps below are the manual equivalent.
+
 ## Run it (Docker)
 
 ```bash
