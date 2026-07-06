@@ -22,6 +22,15 @@ apt-get update -y
 apt-get install -y git curl ufw wireguard ca-certificates gnupg \
   debian-keyring debian-archive-keyring apt-transport-https openssl
 
+# Some VPS images ship nginx/apache listening on :80/:443 — free those ports for Caddy.
+for svc in nginx apache2; do
+  if systemctl is-active --quiet "$svc" 2>/dev/null; then
+    echo "    stopping preinstalled $svc (frees :80/:443 for Caddy)"
+    systemctl stop "$svc" || true
+    systemctl disable "$svc" >/dev/null 2>&1 || true
+  fi
+done
+
 echo "==> [2/8] Node.js 20"
 if ! command -v node >/dev/null; then
   curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
