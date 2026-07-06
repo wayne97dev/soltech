@@ -111,8 +111,8 @@
     </main>
 
     <script>
-      // In production, point this at unknown0 Search.
-      var SEARCH = 'https://duckduckgo.com/?q=%s';
+      // unknown0 Search (SearXNG on our server).
+      var SEARCH = 'https://search.144.91.104.144.nip.io/search?q=%s';
       document.getElementById('f').addEventListener('submit', function (e) {
         e.preventDefault();
         var q = document.getElementById('q').value.trim();

@@ -37,6 +37,31 @@ export default function DownloadPage() {
           your wallet to unlock the download.
         </p>
         <DownloadApp />
+
+        <section className="install-notes">
+          <p className="section-label">// first launch</p>
+          <p className="muted install-intro">
+            It&apos;s an unsigned beta, so your OS warns you the first time. It&apos;s safe — here&apos;s how to open it:
+          </p>
+          <div className="install-grid">
+            <div className="install-os">
+              <h4>macOS</h4>
+              <p>If it says <em>&ldquo;unknown0 is damaged&rdquo;</em>, open <b>Terminal</b> and run:</p>
+              <code>xattr -cr /Applications/unknown0.app</code>
+              <p>then open the app normally.</p>
+            </div>
+            <div className="install-os">
+              <h4>Windows</h4>
+              <p>On the SmartScreen popup:</p>
+              <p><b>More info</b> → <b>Run anyway</b>.</p>
+            </div>
+            <div className="install-os">
+              <h4>Linux</h4>
+              <p>Make the AppImage executable, then run it:</p>
+              <code>chmod +x unknown0-*.AppImage</code>
+            </div>
+          </div>
+        </section>
       </main>
     </>
   );

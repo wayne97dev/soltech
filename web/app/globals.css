@@ -890,6 +890,59 @@ section {
   padding-left: 16px;
 }
 
+/* First-launch install notes */
+.install-notes {
+  margin-top: 56px;
+}
+
+.install-intro {
+  margin: 0 0 18px;
+  max-width: 60ch;
+}
+
+.install-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.install-os {
+  border: 1px solid var(--line-soft);
+  border-radius: 12px;
+  padding: 20px;
+  background: var(--panel);
+}
+
+.install-os h4 {
+  margin: 0 0 10px;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+}
+
+.install-os p {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 0 0 8px;
+}
+
+.install-os code {
+  display: block;
+  background: #05060a;
+  border: 1px solid var(--line-soft);
+  border-radius: 6px;
+  padding: 9px 11px;
+  font-size: 12px;
+  color: #cfd6e6;
+  word-break: break-all;
+  margin: 8px 0;
+}
+
+@media (max-width: 760px) {
+  .install-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 700px) {
   .download-grid {
     grid-template-columns: 1fr;
