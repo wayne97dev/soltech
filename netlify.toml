@@ -8,3 +8,12 @@
 
 [build.environment]
   NODE_VERSION = "18"
+
+# Force the default *.netlify.app build URL to the real domain, so wallet
+# sign-in (which the API only trusts from unknown0.net) always works and
+# everyone lands on the canonical domain.
+[[redirects]]
+  from = "https://ephemeral-marzipan-d2cd54.netlify.app/*"
+  to = "https://unknown0.net/:splat"
+  status = 301
+  force = true
