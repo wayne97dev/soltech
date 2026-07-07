@@ -8,9 +8,9 @@ const fwdBtn = document.getElementById('forward');
 
 const NEWTAB = 'newtab.html';
 
-// Default search engine: our own unknown0 Search (SearXNG on the server).
-// Update the host if the server IP changes, or to search.unknown0.net once DNS points there.
-const SEARCH = 'https://search.144.91.104.144.nip.io/search?q=%s';
+// Default search engine: our own unknown0 Search (SearXNG on the server),
+// served over our real domain once DNS + the Caddy vhost are live.
+const SEARCH = 'https://search.unknown0.net/search?q=%s';
 
 const tabs = [];
 let activeId = null;

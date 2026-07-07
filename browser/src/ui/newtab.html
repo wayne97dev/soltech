@@ -111,8 +111,8 @@
     </main>
 
     <script>
-      // unknown0 Search (SearXNG on our server).
-      var SEARCH = 'https://search.144.91.104.144.nip.io/search?q=%s';
+      // unknown0 Search (SearXNG on our server), served over our real domain.
+      var SEARCH = 'https://search.unknown0.net/search?q=%s';
       document.getElementById('f').addEventListener('submit', function (e) {
         e.preventDefault();
         var q = document.getElementById('q').value.trim();
