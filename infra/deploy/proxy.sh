@@ -18,11 +18,16 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get update -y
 apt-get install -y tinyproxy
 
+# Public IPv4 — bind outbound traffic to it so the exit IP is the stable v4 address
+# (otherwise the server may egress over IPv6).
+PUB_IP=$(curl -4 -s --max-time 8 https://api.ipify.org || ip -4 -o addr show scope global | awk '{print $4}' | cut -d/ -f1 | head -1)
+
 cat > /etc/tinyproxy/tinyproxy.conf <<EOF
 User tinyproxy
 Group tinyproxy
 Port ${PORT}
 Listen 0.0.0.0
+Bind ${PUB_IP}
 Timeout 600
 BasicAuth ${PROXY_USER} ${PROXY_PASS}
 Allow 0.0.0.0/0
@@ -35,8 +40,7 @@ systemctl enable tinyproxy >/dev/null 2>&1 || true
 systemctl restart tinyproxy
 ufw allow "${PORT}/tcp" >/dev/null 2>&1 || true
 
-PUB_IP=$(curl -4 -s --max-time 8 https://api.ipify.org || hostname -I | awk '{print $1}')
 echo ""
-echo "✅ HTTP proxy running on ${PUB_IP}:${PORT} (user: ${PROXY_USER})"
+echo "✅ HTTP proxy running on ${PUB_IP}:${PORT} (user: ${PROXY_USER}, egress bound to IPv4)"
 echo "   The browser routes through this when VPN is toggled on → browsing exits from ${PUB_IP}."
 echo "   test: curl -x http://${PROXY_USER}:${PROXY_PASS}@${PUB_IP}:${PORT} https://ifconfig.me"
