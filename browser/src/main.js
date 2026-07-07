@@ -38,7 +38,8 @@ let mainWindow = null;
 // unknown0 VPN for the browser: route the app's traffic through a SOCKS5 proxy on our
 // server — per-app, like Tor Browser (hides your IP for browsing without touching the
 // rest of the system). Prototype: shared credentials; a real build issues them per holder.
-const VPN_PROXY = 'socks5://144.91.104.144:1080';
+// HTTP proxy (not SOCKS5 — Chromium can't authenticate SOCKS5 proxies).
+const VPN_PROXY = 'http://144.91.104.144:8888';
 const VPN_USER = 'unknown0';
 const VPN_PASS = 'unknown0-beta';
 
