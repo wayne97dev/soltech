@@ -686,15 +686,51 @@ section {
 
 @media (max-width: 600px) {
   .nav {
-    padding: 14px 18px;
+    padding: 12px 14px;
+  }
+  /* Compact the nav so the [ launch app ] CTA still fits on a phone. */
+  .brand {
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    gap: 6px;
+  }
+  .brand-logo {
+    width: 22px;
+    height: 22px;
   }
   .nav-links {
-    gap: 16px;
+    gap: 12px;
+  }
+  .socials {
+    gap: 5px;
+  }
+  .social {
+    min-width: 30px;
+    height: 30px;
+    padding: 0 8px;
+  }
+  /* Icon-only socials in the top bar (the CA label stays in the footer). */
+  .nav .ca-text {
+    display: none;
+  }
+  .nav-cta {
+    padding: 6px 11px;
+    font-size: 12px;
+  }
+  /* Shorten the CTA to "[ launch ]" on phones so it fits even at 360px. */
+  .cta-word {
+    display: none;
   }
   .page,
   .footer {
     padding-left: 18px;
     padding-right: 18px;
+  }
+  .hero {
+    padding-top: 92px;
+  }
+  .hero-globe {
+    height: 320px;
   }
   .feature-grid,
   .steps {
