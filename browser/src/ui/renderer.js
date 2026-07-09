@@ -8,9 +8,9 @@ const fwdBtn = document.getElementById('forward');
 
 const NEWTAB = 'newtab.html';
 
-// Default search engine: our own unknown0 Search (SearXNG on the server),
-// served over our real domain once DNS + the Caddy vhost are live.
-const SEARCH = 'https://search.unknown0.net/search?q=%s';
+// Default search engine: our own unknown0 Search (SearXNG on the server).
+// language=en forces English results (SearXNG otherwise follows the OS locale).
+const SEARCH = 'https://search.unknown0.net/search?q=%s&language=en';
 
 const tabs = [];
 let activeId = null;

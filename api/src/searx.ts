@@ -41,6 +41,7 @@ export async function search(query: string, categoryInput?: string): Promise<Sea
   url.searchParams.set('q', q);
   url.searchParams.set('format', 'json');
   url.searchParams.set('categories', category);
+  url.searchParams.set('language', 'en');
 
   const res = await fetch(url, { headers: { accept: 'application/json' } });
   if (!res.ok) throw new Error(`searxng responded ${res.status}`);

@@ -35,6 +35,9 @@ server:
   base_url: "https://${SEARCH_HOST}/"
   limiter: false
 search:
+  # English results by default (SearXNG otherwise auto-detects the visitor's
+  # browser language — Italian testers were getting Italian results).
+  default_lang: "en"
   formats:
     - html
     - json
