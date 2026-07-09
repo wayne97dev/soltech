@@ -7,7 +7,8 @@
   publish = "out"
 
 [build.environment]
-  NODE_VERSION = "18"
+  # Node 20: transitive wallet deps (@solana/* via WalletConnect) require >=20.18.
+  NODE_VERSION = "20"
 
 # Force the default *.netlify.app build URL to the real domain, so wallet
 # sign-in (which the API only trusts from unknown0.net) always works and
