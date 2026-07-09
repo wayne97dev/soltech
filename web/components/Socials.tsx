@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 // ── Update these for unknown0 / $UNK0 ─────────────────────────────────────────
-const TWITTER = 'https://x.com/unknown0';
+const TWITTER = 'https://x.com/unk0vpn'; // official unknown0 X account
 const DEXSCREENER = 'https://dexscreener.com/robinhoodchain/unknown0';
 const CONTRACT = ''; // paste the $UNK0 ERC-20 address after the Robinhood Chain (NOXA) launch
 // ──────────────────────────────────────────────────────────────────────────────
