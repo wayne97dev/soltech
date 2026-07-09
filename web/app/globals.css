@@ -9,8 +9,9 @@
   --text: #e9ebf2;
   --muted: #767c8c;
   --white: #ffffff;
-  --accent: #9db4ff;
-  --green: #5ef2b0;
+  /* Robinhood Chain signature green — used for accents throughout. */
+  --accent: #00c805;
+  --green: #00c805;
   --red: #ff6b6b;
   --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
@@ -39,7 +40,7 @@ body {
 }
 
 ::selection {
-  background: rgba(157, 180, 255, 0.25);
+  background: rgba(0, 200, 5, 0.28);
   color: #fff;
 }
 
@@ -124,9 +125,9 @@ a {
 }
 
 .nav-cta:hover {
-  background: var(--white);
+  background: var(--accent);
   color: #000 !important;
-  border-color: var(--white);
+  border-color: var(--accent);
 }
 
 /* ---------- Social / contract links ---------- */
@@ -175,6 +176,13 @@ a {
 
 section {
   position: relative;
+}
+
+/* Small Robinhood feather next to "Robinhood Chain" mentions. */
+.rh-mark {
+  display: inline-block;
+  vertical-align: -0.12em;
+  color: var(--accent);
 }
 
 .section-label,
@@ -295,8 +303,9 @@ section {
 }
 
 .btn.primary:hover {
-  background: transparent;
-  color: var(--white);
+  background: var(--accent);
+  color: #000;
+  border-color: var(--accent);
 }
 
 .btn:disabled {
@@ -601,46 +610,7 @@ section {
   color: var(--text);
 }
 
-/* ---------- Wallet adapter override ---------- */
-.wallet-adapter-button {
-  font-family: var(--mono) !important;
-  font-size: 14px !important;
-  height: auto !important;
-  line-height: 1 !important;
-  padding: 12px 18px !important;
-  background: transparent !important;
-  border: 1px solid var(--line) !important;
-  border-radius: 7px !important;
-  color: var(--text) !important;
-  transition: all 0.16s ease !important;
-}
-
-.wallet-adapter-button:not([disabled]):hover {
-  background: rgba(255, 255, 255, 0.04) !important;
-  border-color: rgba(255, 255, 255, 0.5) !important;
-}
-
-.wallet-adapter-button-trigger {
-  background: transparent !important;
-}
-
-.wallet-adapter-dropdown-list {
-  background: var(--bg-2) !important;
-  border: 1px solid var(--line) !important;
-  box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.9) !important;
-}
-
-.wallet-adapter-dropdown-list-item {
-  font-family: var(--mono) !important;
-  font-size: 13px !important;
-  font-weight: 500 !important;
-  color: var(--text) !important;
-  border-radius: 6px !important;
-}
-
-.wallet-adapter-dropdown-list-item:not([disabled]):hover {
-  background: rgba(255, 255, 255, 0.06) !important;
-}
+/* Wallet connect UI is provided by RainbowKit (themed in providers.tsx). */
 
 /* ---------- Animations ---------- */
 @keyframes blink {
@@ -791,7 +761,7 @@ section {
 }
 
 .search-bar:focus-within {
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: rgba(0, 200, 5, 0.55);
 }
 
 .search-prompt {
@@ -925,8 +895,8 @@ section {
 
 .search-tab.active {
   color: #000;
-  background: var(--white);
-  border-color: var(--white);
+  background: var(--accent);
+  border-color: var(--accent);
   font-weight: 600;
 }
 

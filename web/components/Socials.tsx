@@ -4,8 +4,8 @@ import { useState } from 'react';
 
 // ── Update these for unknown0 / $UNK0 ─────────────────────────────────────────
 const TWITTER = 'https://x.com/unknown0';
-const DEXSCREENER = 'https://dexscreener.com/solana/unknown0';
-const CONTRACT = ''; // paste the $UNK0 mint address after the pump.fun launch
+const DEXSCREENER = 'https://dexscreener.com/robinhoodchain/unknown0';
+const CONTRACT = ''; // paste the $UNK0 ERC-20 address after the Robinhood Chain (NOXA) launch
 // ──────────────────────────────────────────────────────────────────────────────
 
 function XIcon() {

@@ -10,7 +10,7 @@ const CATEGORIES: { key: SearchCategory; label: string }[] = [
   { key: 'videos', label: 'videos' },
 ];
 
-// Crypto shortcut: a Solana address or a $TICKER gets quick links.
+// Crypto shortcut: an EVM contract address (0x…) or a $TICKER gets quick links.
 type Shortcut =
   | { type: 'ca'; value: string }
   | { type: 'token'; value: string }
@@ -18,7 +18,7 @@ type Shortcut =
 
 function detectShortcut(raw: string): Shortcut {
   const s = raw.trim();
-  if (/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(s)) return { type: 'ca', value: s };
+  if (/^0x[a-fA-F0-9]{40}$/.test(s)) return { type: 'ca', value: s };
   if (/^\$[A-Za-z0-9]{2,12}$/.test(s)) return { type: 'token', value: s.slice(1) };
   return null;
 }
@@ -182,9 +182,9 @@ function ShortcutCard({ shortcut }: { shortcut: NonNullable<Shortcut> }) {
         <span className="shortcut-tag">CONTRACT</span>
         <code className="shortcut-val">{a}</code>
         <div className="shortcut-links">
-          <a href={`https://dexscreener.com/solana/${a}`} target="_blank" rel="noreferrer">Dexscreener</a>
-          <a href={`https://solscan.io/token/${a}`} target="_blank" rel="noreferrer">Solscan</a>
-          <a href={`https://birdeye.so/token/${a}?chain=solana`} target="_blank" rel="noreferrer">Birdeye</a>
+          <a href={`https://dexscreener.com/search?q=${a}`} target="_blank" rel="noreferrer">Dexscreener</a>
+          <a href={`https://robinhoodchain.blockscout.com/token/${a}`} target="_blank" rel="noreferrer">Explorer</a>
+          <a href={`https://www.geckoterminal.com/search?q=${a}`} target="_blank" rel="noreferrer">GeckoTerminal</a>
         </div>
       </div>
     );
@@ -196,7 +196,7 @@ function ShortcutCard({ shortcut }: { shortcut: NonNullable<Shortcut> }) {
       <code className="shortcut-val">${t}</code>
       <div className="shortcut-links">
         <a href={`https://dexscreener.com/search?q=${t}`} target="_blank" rel="noreferrer">Dexscreener</a>
-        <a href={`https://birdeye.so/find?keyword=${t}`} target="_blank" rel="noreferrer">Birdeye</a>
+        <a href={`https://www.geckoterminal.com/search?q=${t}`} target="_blank" rel="noreferrer">GeckoTerminal</a>
       </div>
     </div>
   );

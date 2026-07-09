@@ -1,6 +1,6 @@
 import cron from 'node-cron';
 import { prisma } from '../db';
-import { checkEligibility } from '../solana';
+import { checkEligibility } from '../chain';
 import { wireguard } from '../wireguard';
 import { config } from '../config';
 

@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify';
-import { checkEligibilityCached } from '../solana';
+import { checkEligibilityCached } from '../chain';
 import { config } from '../config';
 
 export async function downloadRoutes(app: FastifyInstance): Promise<void> {

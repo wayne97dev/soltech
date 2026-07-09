@@ -15,23 +15,18 @@ export function clearToken(): void {
   if (typeof window !== 'undefined') window.localStorage.removeItem(TOKEN_KEY);
 }
 
-function toBase64(bytes: Uint8Array): string {
-  let bin = '';
-  for (const b of bytes) bin += String.fromCharCode(b);
-  return btoa(bin);
-}
-
 /**
- * Full Sign-in with Solana flow: nonce -> sign -> verify.
+ * Full Sign-in with Ethereum flow: nonce -> sign -> verify.
+ * `signMessage` returns the wallet's 0x-prefixed signature over the message.
  * Persists the JWT (so it works across pages) and returns it.
  */
 export async function requestSignIn(
   wallet: string,
-  signMessage: (message: Uint8Array) => Promise<Uint8Array>,
+  signMessage: (message: string) => Promise<string>,
 ): Promise<string> {
   const { message } = await getNonce(wallet);
-  const signature = await signMessage(new TextEncoder().encode(message));
-  const { token } = await verify(wallet, message, toBase64(signature));
+  const signature = await signMessage(message);
+  const { token } = await verify(wallet, message, signature);
   saveToken(token);
   return token;
 }

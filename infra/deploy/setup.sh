@@ -63,7 +63,7 @@ if [ ! -f "$APP_DIR/api/.env" ]; then
   sed -i "s|^JWT_SECRET=.*|JWT_SECRET=$(openssl rand -hex 32)|" "$APP_DIR/api/.env"
   sed -i "s|^CORS_ORIGIN=.*|CORS_ORIGIN=$SITE_ORIGIN|" "$APP_DIR/api/.env"
   sed -i "s|^NODE_ENV=.*|NODE_ENV=production|" "$APP_DIR/api/.env"
-  echo "    wrote $APP_DIR/api/.env (edit it later for TOKEN_MINT, etc.)"
+  echo "    wrote $APP_DIR/api/.env (edit it later for TOKEN_ADDRESS, etc.)"
 else
   echo "    kept existing $APP_DIR/api/.env"
 fi

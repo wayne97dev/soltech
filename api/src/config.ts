@@ -12,8 +12,10 @@ export const config = {
   jwtSecret: process.env.JWT_SECRET ?? 'dev-insecure-secret-change-me',
   jwtTtl: process.env.JWT_TTL ?? '7d',
 
-  solanaRpcUrl: process.env.SOLANA_RPC_URL ?? 'https://api.mainnet-beta.solana.com',
-  tokenMint: process.env.TOKEN_MINT ?? '',
+  // Robinhood Chain (EVM L2) — RPC + chain id for on-chain ERC-20 balance checks.
+  rpcUrl: process.env.RPC_URL ?? 'https://rpc.mainnet.chain.robinhood.com',
+  chainId: Number(process.env.CHAIN_ID ?? '4663'),
+  tokenAddress: process.env.TOKEN_ADDRESS ?? '',
   minTokenBalance: Number(process.env.MIN_TOKEN_BALANCE ?? '0'),
   devBypassTokenGate: (process.env.DEV_BYPASS_TOKEN_GATE ?? 'false') === 'true',
 

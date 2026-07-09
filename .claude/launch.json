@@ -18,6 +18,12 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["--yes", "serve", "browser/src/ui", "-l", "3100"],
       "port": 3100
+    },
+    {
+      "name": "rwa-site",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["--yes", "serve", "/Users/wayne/tech robinhood/web", "-l", "4318"],
+      "port": 4318
     }
   ]
 }

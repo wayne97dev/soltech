@@ -1,13 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { useWallet } from '@solana/wallet-adapter-react';
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import { useAccount, useSignMessage } from 'wagmi';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { status, provision, type AccessStatus } from '../lib/api';
 import { requestSignIn } from '../lib/auth';
 
 export default function AccessPanel() {
-  const { publicKey, signMessage, connected } = useWallet();
+  const { address, isConnected } = useAccount();
+  const { signMessageAsync } = useSignMessage();
   const [token, setToken] = useState<string | null>(null);
   const [info, setInfo] = useState<AccessStatus | null>(null);
   const [config, setConfig] = useState<string | null>(null);
@@ -15,11 +16,11 @@ export default function AccessPanel() {
   const [error, setError] = useState<string | null>(null);
 
   async function signIn() {
-    if (!publicKey || !signMessage) return;
+    if (!address) return;
     setBusy(true);
     setError(null);
     try {
-      const t = await requestSignIn(publicKey.toBase58(), signMessage);
+      const t = await requestSignIn(address, (message) => signMessageAsync({ message }));
       setToken(t);
       setInfo(await status(t));
     } catch (e) {
@@ -54,7 +55,7 @@ export default function AccessPanel() {
     URL.revokeObjectURL(url);
   }
 
-  const short = info ? `${info.wallet.slice(0, 4)}…${info.wallet.slice(-4)}` : '';
+  const short = info ? `${info.wallet.slice(0, 6)}…${info.wallet.slice(-4)}` : '';
 
   return (
     <div className="terminal">
@@ -73,15 +74,15 @@ export default function AccessPanel() {
           <span className="sep">$</span> ./connect
         </p>
 
-        {!connected && (
+        {!isConnected && (
           <p className="line muted">
             <span className="caret">▏</span> waiting for wallet…
           </p>
         )}
 
         <div className="terminal-actions">
-          <WalletMultiButton />
-          {connected && !token && (
+          <ConnectButton showBalance={false} chainStatus="icon" accountStatus="address" />
+          {isConnected && !token && (
             <button className="btn" disabled={busy} onClick={signIn}>
               {busy ? 'signing…' : '[ sign in ]'}
             </button>

@@ -5,7 +5,7 @@ import { Providers } from './providers';
 export const metadata: Metadata = {
   title: 'unknown0 VPN — the private network you own',
   description:
-    'Fast, encrypted, no-logs VPN, free for holders of the unknown0 token on Solana. Hold the token, own the network.',
+    'Fast, encrypted, no-logs VPN, free for holders of the unknown0 token on Robinhood Chain. Hold the token, own the network.',
 };
 
 export const viewport: Viewport = {

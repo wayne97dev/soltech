@@ -60,7 +60,7 @@ Backend config lives in `/opt/unknown0/api/.env`.
 
 ## What to flip later
 
-- **Token launch** → in `.env` set `TOKEN_MINT=<mint>`, `MIN_TOKEN_BALANCE=...`, `DEV_BYPASS_TOKEN_GATE=false`, then `systemctl restart unknown0-api`. (Until then, everyone counts as eligible — fine for testing.)
+- **Token launch** → in `.env` set `TOKEN_ADDRESS=<0x…>` (the $UNK0 ERC-20 on Robinhood Chain), `MIN_TOKEN_BALANCE=...`, `DEV_BYPASS_TOKEN_GATE=false`, then `systemctl restart unknown0-api`. (Until then, everyone counts as eligible — fine for testing.)
 - **Real VPN** → follow [`../README.md`](../README.md) to bring up `wg0`, then set `WIREGUARD_PROVIDER=local` in `.env` and restart. The service already runs as root so it can manage WireGuard.
 - **Real search (SearXNG)** → see "Search (SearXNG)" in [`../README.md`](../README.md); run it on `127.0.0.1:8080`, then set `SEARXNG_URL=http://localhost:8080`.
 - **Browser downloads** → after building installers, set `DOWNLOAD_MAC/WIN/LINUX` to the release URLs.

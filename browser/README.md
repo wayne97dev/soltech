@@ -48,7 +48,7 @@ Output lands in `browser/dist/`:
 To let **only $UNK0 holders** download the app:
 
 1. Build the installers (above) and host them — e.g. **GitHub Releases**, S3, or your own server.
-2. Add a token-gated **/download** page to the site: the holder connects their wallet → signs (the existing *Sign-in with Solana*) → the backend checks eligibility → it returns the download links (ideally short-lived signed URLs).
+2. Add a token-gated **/download** page to the site: the holder connects their wallet → signs (the existing *Sign-In with Ethereum*) → the backend checks eligibility → it returns the download links (ideally short-lived signed URLs).
 
 This reuses the exact same auth + eligibility as the VPN and Search — no new identity system. (The download page can be scaffolded on request.)
 
@@ -73,7 +73,7 @@ Each tab is a Chromium `<webview>`. The chrome (toolbar/tabs) is the host page; 
 
 - **Default search → unknown0 Search.** Change the `SEARCH` constant in [renderer.js](src/ui/renderer.js) and [newtab.html](src/ui/newtab.html) to your deployed search URL (`.../search/?q=%s`).
 - **VPN toggle → the real tunnel.** The `vpn:toggle` IPC handler in [main.js](src/main.js) currently just flips a flag. Wire it to bring the system **WireGuard** tunnel (the unknown0 VPN) up/down.
-- **Embedded Solana wallet** → token-gate premium features (free for holders), reusing the Sign-in-with-Solana flow from the web app.
+- **Embedded EVM wallet** → token-gate premium features (free for holders), reusing the Sign-In-with-Ethereum flow from the web app.
 - **Maintained blocklist** (EasyList) instead of the built-in starter list.
 - **History, bookmarks, settings, downloads, find-in-page.**
 - **Packaging & updates**: `electron-builder` for signed installers (Win/Mac/Linux) + auto-update.

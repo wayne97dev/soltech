@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify';
 import { prisma } from '../db';
-import { checkEligibility } from '../solana';
+import { checkEligibility } from '../chain';
 import {
   generateKeyPair,
   allocateAddress,

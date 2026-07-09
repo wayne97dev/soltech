@@ -15,7 +15,7 @@ model User {
   peers     VpnPeer[]
 }
 
-// One-time nonce for Sign-in with Solana login (anti-replay).
+// One-time nonce for wallet sign-in (SIWE, anti-replay).
 model AuthNonce {
   id        String   @id @default(cuid())
   wallet    String

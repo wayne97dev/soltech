@@ -1,6 +1,6 @@
 # unknown0 VPN
 
-A fast, private VPN that is **free only for holders of the $UNK0 token** (the unknown0 SPL token on Solana, launched via pump.fun).
+A fast, private VPN that is **free only for holders of the $UNK0 token** (the unknown0 ERC-20 token on Robinhood Chain, launched via NOXA).
 Access is tied to token ownership: hold the token and you keep the VPN; sell below the threshold and access is revoked automatically.
 
 > Status: **MVP** — web portal (frontend + backend) + self-hosted WireGuard. The token and the extra features come later.
@@ -11,7 +11,7 @@ Access is tied to token ownership: hold the token and you keep the VPN; sell bel
 
 ```
 ┌──────────┐   1. connect wallet       ┌─────────────┐   3. read token balance  ┌──────────┐
-│  Browser │ ────────────────────────► │   Backend   │ ───────────────────────► │  Solana  │
+│  Browser │ ────────────────────────► │   Backend   │ ───────────────────────► │ RH Chain │
 │ (Next.js)│   2. sign message         │  (Fastify)  │ ◄─────────────────────── │   RPC    │
 │ + wallet │ ◄──────────────────────── │             │   4. if eligible:        └──────────┘
 └──────────┘   5. WireGuard config     │             │      create WG peer      ┌──────────┐
@@ -21,8 +21,8 @@ Access is tied to token ownership: hold the token and you keep the VPN; sell bel
                                               └────► sold below threshold → revoke
 ```
 
-1. The user connects a wallet (Phantom / Solflare).
-2. They sign a **Sign-in with Solana** message — free, no transaction, it only proves the wallet is theirs.
+1. The user connects a wallet (MetaMask / Rainbow / Robinhood Wallet).
+2. They sign a **Sign-In with Ethereum** message — free, no transaction, it only proves the wallet is theirs.
 3. The backend reads the token balance **on-chain**.
 4. If it is ≥ threshold → it generates a WireGuard key pair, assigns an IP, and enables the peer on the VPN server.
 5. The portal returns a `.conf` file to import into the WireGuard app.
@@ -36,16 +36,16 @@ Access is tied to token ownership: hold the token and you keep the VPN; sell bel
 unknown0/
 ├── api/                      # Backend — Fastify + TypeScript
 │   ├── prisma/               # Database schema (SQLite in dev, Postgres in prod)
-│   ├── scripts/smoke.cjs     # End-to-end smoke test
+│   ├── scripts/smoke.ts      # End-to-end smoke test
 │   └── src/
 │       ├── config.ts         # All configuration, loaded from .env
-│       ├── siws.ts           # Sign-in with Solana (message + signature verification)
-│       ├── solana.ts         # Token balance read + eligibility rules
+│       ├── siwe.ts           # Sign-In with Ethereum (message + signature verification)
+│       ├── chain.ts          # ERC-20 balance read + eligibility rules (Robinhood Chain)
 │       ├── wireguard.ts      # Keys, IP allocation, provider (mock/local), .conf generation
 │       ├── routes/           # /auth/* and /access/*
 │       ├── worker/           # Periodic balance re-verification
 │       └── index.ts          # Server + worker bootstrap
-├── web/                      # Frontend — Next.js + Solana wallet-adapter
+├── web/                      # Frontend — Next.js + wagmi/RainbowKit (EVM wallets)
 │   ├── app/                  # Page, providers, global styles
 │   ├── components/           # Globe (animated), BackgroundFX, AccessPanel
 │   └── lib/api.ts            # Backend client
@@ -92,15 +92,15 @@ Open **http://localhost:3000**, connect a wallet, sign — and thanks to the dev
 
 ---
 
-## Connecting the real token (after the pump.fun launch)
+## Connecting the real token (after the Robinhood Chain launch)
 
 In `api/.env`:
 
 ```bash
 DEV_BYPASS_TOKEN_GATE=false
-TOKEN_MINT=<mint_address_from_pumpfun>
+TOKEN_ADDRESS=<0x_erc20_address_from_the_NOXA_launch>
 MIN_TOKEN_BALANCE=100000           # how many tokens are required for free VPN
-SOLANA_RPC_URL=https://...         # use a dedicated RPC (Helius/QuickNode); public endpoints are rate-limited
+RPC_URL=https://rpc.mainnet.chain.robinhood.com   # Robinhood Chain RPC (chain id 4663)
 ```
 
 From then on, access depends on the real on-chain balance. No code changes needed.

@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useWallet } from '@solana/wallet-adapter-react';
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import { useAccount, useSignMessage } from 'wagmi';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { getDownloads, type Downloads } from '../lib/api';
 import { loadToken, clearToken, requestSignIn } from '../lib/auth';
 
@@ -13,7 +13,8 @@ const PLATFORMS: { key: keyof Downloads; label: string; sub: string }[] = [
 ];
 
 export default function DownloadApp() {
-  const { publicKey, signMessage, connected } = useWallet();
+  const { address, isConnected } = useAccount();
+  const { signMessageAsync } = useSignMessage();
   const [token, setToken] = useState<string | null>(null);
   const [dl, setDl] = useState<Downloads | null>(null);
   const [eligible, setEligible] = useState<boolean | null>(null);
@@ -49,11 +50,11 @@ export default function DownloadApp() {
   }
 
   async function signIn() {
-    if (!publicKey || !signMessage) return;
+    if (!address) return;
     setBusy(true);
     setError(null);
     try {
-      const t = await requestSignIn(publicKey.toBase58(), signMessage);
+      const t = await requestSignIn(address, (message) => signMessageAsync({ message }));
       setToken(t);
       await load(t);
     } catch (e) {
@@ -84,8 +85,8 @@ export default function DownloadApp() {
             Sign in with your wallet to unlock the download. Free for $UNK0 holders.
           </p>
           <div className="terminal-actions">
-            <WalletMultiButton />
-            {connected && (
+            <ConnectButton showBalance={false} chainStatus="icon" accountStatus="address" />
+            {isConnected && (
               <button className="btn primary" disabled={busy} onClick={signIn}>
                 {busy ? 'signing…' : '[ sign in ]'}
               </button>

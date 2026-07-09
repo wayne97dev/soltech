@@ -4,6 +4,23 @@ import Globe from '../components/Globe';
 import AccessPanel from '../components/AccessPanel';
 import Socials from '../components/Socials';
 
+// Small Robinhood feather mark (official glyph via Simple Icons), shown next
+// to "Robinhood Chain" mentions. Colored via CSS (--accent green).
+function RobinhoodMark({ size = 12 }: { size?: number }) {
+  return (
+    <svg
+      className="rh-mark"
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path d="M2.84 24h.53c.096 0 .192-.048.224-.128C7.591 13.696 11.94 8.656 14.67 5.638c.112-.128.064-.225-.096-.225h-4.88a.55.55 0 0 0-.45.225L5.746 9.972c-.514.642-.642 1.236-.642 2.086v4.43c-1.14 3.194-1.862 5.361-2.392 7.32-.032.125.016.192.129.192M20.447.646c-.754-.802-4.157-.834-5.73-.224a3 3 0 0 0-.786.465 41 41 0 0 0-3.323 3.178c-.112.113-.064.225.097.225h5.409c.497 0 .786.289.786.786v6.1c0 .16.128.208.225.064l3.258-4.254c.53-.69.69-.898.835-1.861.192-1.413.08-3.58-.77-4.479m-6.982 16.18 2.231-3.676a.7.7 0 0 0 .064-.29V6.73c0-.16-.112-.225-.224-.097-3.355 3.74-5.971 7.672-8.395 12.407-.06.12.016.225.16.177l5.009-1.54c.565-.174.882-.402 1.155-.852" />
+    </svg>
+  );
+}
+
 const PRODUCTS = [
   {
     n: '01',
@@ -32,11 +49,11 @@ const FEATURES = [
   { n: '01', t: 'TOKEN-GATED', d: 'Access tied to token ownership. No cards, no subscriptions.' },
   { n: '02', t: 'ZERO LOG', d: 'No traffic logs. Your activity stays yours alone.' },
   { n: '03', t: 'WIREGUARD', d: 'Modern protocol: fast, lightweight, end-to-end encrypted.' },
-  { n: '04', t: 'ON-CHAIN', d: 'Balance verified directly on Solana on every access.' },
+  { n: '04', t: 'ON-CHAIN', d: 'Balance verified directly on Robinhood Chain on every access.' },
 ];
 
 const STEPS = [
-  { n: '01', t: 'Connect your wallet', d: 'Phantom, Solflare or Backpack. One click.' },
+  { n: '01', t: 'Connect your wallet', d: 'MetaMask, Rainbow or Robinhood Wallet. One click.' },
   { n: '02', t: 'Sign', d: 'A message proving the wallet is yours. Free, zero gas.' },
   { n: '03', t: 'Hold the token', d: 'As long as you stay above the threshold, the network is yours.' },
   { n: '04', t: 'Connect', d: 'Download the WireGuard config and browse protected.' },
@@ -65,7 +82,10 @@ export default function Home() {
         {/* HERO */}
         <section className="hero">
           <div className="hero-copy">
-            <p className="eyebrow">// VPN ON-CHAIN · $UNK0 · SOLANA</p>
+            <p className="eyebrow">
+              {'// VPN ON-CHAIN · $UNK0 · '}
+              <RobinhoodMark /> ROBINHOOD CHAIN
+            </p>
             <h1 className="title">
               The private network
               <br />
@@ -173,7 +193,9 @@ export default function Home() {
             <img src="/logo.svg" alt="" className="brand-logo" width={22} height={22} />UNKNOWN0
           </span>
           <Socials />
-          <span className="footer-meta">built on Solana · © 2026</span>
+          <span className="footer-meta">
+            built on <RobinhoodMark size={11} /> Robinhood Chain · © 2026
+          </span>
         </div>
       </footer>
     </>

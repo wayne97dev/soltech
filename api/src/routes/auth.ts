@@ -2,12 +2,15 @@ import { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import { randomBytes } from 'node:crypto';
 import { prisma } from '../db';
-import { buildSignInMessage, verifySignature } from '../siws';
+import { buildSignInMessage, verifySignature } from '../siwe';
+
+const walletSchema = z.string().regex(/^0x[a-fA-F0-9]{40}$/, 'invalid EVM address');
 
 export async function authRoutes(app: FastifyInstance): Promise<void> {
   // 1) The client requests a nonce to sign.
   app.post('/auth/nonce', async (req) => {
-    const { wallet } = z.object({ wallet: z.string().min(32) }).parse(req.body);
+    const { wallet: raw } = z.object({ wallet: walletSchema }).parse(req.body);
+    const wallet = raw.toLowerCase();
 
     const nonce = randomBytes(16).toString('hex');
     const issuedAt = new Date().toISOString();
@@ -20,9 +23,11 @@ export async function authRoutes(app: FastifyInstance): Promise<void> {
 
   // 2) The client sends the signed message; we verify it and issue a session (JWT).
   app.post('/auth/verify', async (req, reply) => {
-    const { wallet, message, signature } = z
-      .object({ wallet: z.string().min(32), message: z.string(), signature: z.string() })
+    const parsed = z
+      .object({ wallet: walletSchema, message: z.string(), signature: z.string() })
       .parse(req.body);
+    const wallet = parsed.wallet.toLowerCase();
+    const { message, signature } = parsed;
 
     const match = message.match(/Nonce: ([a-f0-9]+)/);
     if (!match) return reply.code(400).send({ error: 'no-nonce-in-message' });
@@ -34,7 +39,7 @@ export async function authRoutes(app: FastifyInstance): Promise<void> {
       return reply.code(401).send({ error: 'nonce-invalid-or-expired' });
     }
 
-    if (!verifySignature(message, signature, wallet)) {
+    if (!(await verifySignature(message, signature, wallet))) {
       return reply.code(401).send({ error: 'bad-signature' });
     }
 
