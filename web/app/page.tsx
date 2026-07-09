@@ -66,7 +66,8 @@ export default function Home() {
 
       <header className="nav">
         <a className="brand" href="#top">
-          <img src="/logo.svg" alt="" className="brand-logo" width={26} height={26} />UNKNOWN0<span className="brand-cursor">█</span>
+          <img src="/brand/wordmark.png" alt="unknown0" className="brand-wordmark" />
+          <span className="brand-cursor">█</span>
         </a>
         <nav className="nav-links">
           <a href="#features">features</a>
@@ -190,7 +191,7 @@ export default function Home() {
         </div>
         <div className="footer-row">
           <span className="brand">
-            <img src="/logo.svg" alt="" className="brand-logo" width={22} height={22} />UNKNOWN0
+            <img src="/brand/badge.png" alt="" className="brand-logo" width={22} height={22} />UNKNOWN0
           </span>
           <Socials />
           <span className="footer-meta">

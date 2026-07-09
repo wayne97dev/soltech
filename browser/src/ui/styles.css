@@ -5,9 +5,9 @@
   --line-soft: rgba(255, 255, 255, 0.06);
   --text: #e9ebf2;
   --muted: #767c8c;
-  /* Robinhood Chain signature green. */
-  --accent: #00c805;
-  --green: #00c805;
+  /* unknown0 brand lime. */
+  --accent: #caf804;
+  --green: #caf804;
   --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
@@ -144,7 +144,7 @@ body {
 }
 
 #omnibox:focus-within {
-  border-color: rgba(0, 200, 5, 0.55);
+  border-color: rgba(202, 248, 4, 0.55);
 }
 
 #lock {

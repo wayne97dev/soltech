@@ -9,9 +9,9 @@
   --text: #e9ebf2;
   --muted: #767c8c;
   --white: #ffffff;
-  /* Robinhood Chain signature green — used for accents throughout. */
-  --accent: #00c805;
-  --green: #00c805;
+  /* unknown0 brand lime (sampled from the official graphics pack). */
+  --accent: #caf804;
+  --green: #caf804;
   --red: #ff6b6b;
   --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
@@ -40,7 +40,7 @@ body {
 }
 
 ::selection {
-  background: rgba(0, 200, 5, 0.28);
+  background: rgba(202, 248, 4, 0.28);
   color: #fff;
 }
 
@@ -87,6 +87,13 @@ a {
 .brand-logo {
   display: block;
   flex: none;
+}
+
+/* Official wordmark image in the nav (replaces logo + text). */
+.brand-wordmark {
+  display: block;
+  height: 24px;
+  width: auto;
 }
 
 .brand-mark {
@@ -668,6 +675,9 @@ section {
     width: 22px;
     height: 22px;
   }
+  .brand-wordmark {
+    height: 19px;
+  }
   .nav-links {
     gap: 12px;
   }
@@ -761,7 +771,7 @@ section {
 }
 
 .search-bar:focus-within {
-  border-color: rgba(0, 200, 5, 0.55);
+  border-color: rgba(202, 248, 4, 0.55);
 }
 
 .search-prompt {

@@ -16,7 +16,7 @@ export default function DownloadPage() {
 
       <header className="nav">
         <Link className="brand" href="/">
-          <img src="/logo.svg" alt="" className="brand-logo" width={26} height={26} />UNKNOWN0
+          <img src="/brand/wordmark.png" alt="unknown0" className="brand-wordmark" />
           <span className="brand-cursor">█</span>
         </Link>
         <nav className="nav-links">

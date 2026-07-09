@@ -105,10 +105,10 @@ export default function Globe() {
 
       ctx.clearRect(0, 0, w, h);
 
-      // Glowing halo behind the globe (Robinhood green).
+      // Glowing halo behind the globe (unknown0 brand lime).
       const halo = ctx.createRadialGradient(cx, cy, R * 0.2, cx, cy, R * 1.65);
-      halo.addColorStop(0, 'rgba(0,200,5,0.055)');
-      halo.addColorStop(0.55, 'rgba(0,200,5,0.018)');
+      halo.addColorStop(0, 'rgba(202,248,4,0.05)');
+      halo.addColorStop(0.55, 'rgba(202,248,4,0.016)');
       halo.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = halo;
       ctx.beginPath();
@@ -172,7 +172,7 @@ export default function Globe() {
           const sy = cy - p.y * R;
           if (prev) {
             const z = (p.z + prev.z) / 2;
-            ctx.strokeStyle = `rgba(0,220,40,${depthAlpha(z, 0.6, 0.03).toFixed(3)})`;
+            ctx.strokeStyle = `rgba(202,248,4,${depthAlpha(z, 0.6, 0.03).toFixed(3)})`;
             ctx.beginPath();
             ctx.moveTo(prev.x, prev.y);
             ctx.lineTo(sx, sy);
@@ -188,8 +188,8 @@ export default function Globe() {
           const sx = cx + p.x * R;
           const sy = cy - p.y * R;
           const g = ctx.createRadialGradient(sx, sy, 0, sx, sy, 7);
-          g.addColorStop(0, 'rgba(190,255,200,0.95)');
-          g.addColorStop(1, 'rgba(0,200,5,0)');
+          g.addColorStop(0, 'rgba(240,255,180,0.95)');
+          g.addColorStop(1, 'rgba(202,248,4,0)');
           ctx.fillStyle = g;
           ctx.beginPath();
           ctx.arc(sx, sy, 7, 0, Math.PI * 2);
@@ -203,7 +203,7 @@ export default function Globe() {
         if (p.z <= 0) continue;
         const sx = cx + p.x * R;
         const sy = cy - p.y * R;
-        ctx.fillStyle = `rgba(170,255,180,${depthAlpha(p.z, 1, 0.2).toFixed(3)})`;
+        ctx.fillStyle = `rgba(226,252,120,${depthAlpha(p.z, 1, 0.2).toFixed(3)})`;
         ctx.beginPath();
         ctx.arc(sx, sy, 1.7, 0, Math.PI * 2);
         ctx.fill();
