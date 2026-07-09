@@ -9,8 +9,9 @@
         --text: #e9ebf2;
         --muted: #767c8c;
         --line: rgba(255, 255, 255, 0.1);
-        --accent: #9db4ff;
-        --green: #5ef2b0;
+        /* Robinhood Chain signature green. */
+        --accent: #00c805;
+        --green: #00c805;
         --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       }
       * { box-sizing: border-box; }
@@ -53,7 +54,7 @@
         background: #0a0c11;
         padding: 6px 8px 6px 18px;
       }
-      form:focus-within { border-color: rgba(255, 255, 255, 0.4); }
+      form:focus-within { border-color: rgba(0, 200, 5, 0.55); }
       .prompt { color: var(--accent); font-size: 18px; }
       input {
         flex: 1;
@@ -67,15 +68,16 @@
       }
       input::placeholder { color: var(--muted); }
       button {
-        background: #fff;
+        background: var(--accent);
         color: #000;
         border: 0;
         border-radius: 8px;
         padding: 10px 16px;
         font-family: var(--mono);
-        font-weight: 500;
+        font-weight: 600;
         cursor: pointer;
       }
+      button:hover { background: #00e206; }
       .links {
         margin-top: 26px;
         color: var(--muted);

@@ -5,8 +5,9 @@
   --line-soft: rgba(255, 255, 255, 0.06);
   --text: #e9ebf2;
   --muted: #767c8c;
-  --accent: #9db4ff;
-  --green: #5ef2b0;
+  /* Robinhood Chain signature green. */
+  --accent: #00c805;
+  --green: #00c805;
   --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
@@ -64,9 +65,10 @@ body {
 }
 
 .tab.active {
-  background: #11151d;
+  background: #0f1510;
   color: var(--text);
   border-color: var(--line);
+  box-shadow: inset 0 2px 0 var(--accent);
 }
 
 .tab-title {
@@ -142,7 +144,7 @@ body {
 }
 
 #omnibox:focus-within {
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: rgba(0, 200, 5, 0.55);
 }
 
 #lock {
@@ -185,7 +187,7 @@ body {
 }
 
 #vpn.on {
-  color: #06121e;
+  color: #000;
   background: var(--green);
   border-color: var(--green);
   font-weight: 700;
