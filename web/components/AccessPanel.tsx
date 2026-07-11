@@ -12,6 +12,7 @@ export default function AccessPanel() {
   const [token, setToken] = useState<string | null>(null);
   const [info, setInfo] = useState<AccessStatus | null>(null);
   const [config, setConfig] = useState<string | null>(null);
+  const [region, setRegion] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -22,7 +23,9 @@ export default function AccessPanel() {
     try {
       const t = await requestSignIn(address, (message) => signMessageAsync({ message }));
       setToken(t);
-      setInfo(await status(t));
+      const s = await status(t);
+      setInfo(s);
+      if (s.regions?.length && !region) setRegion(s.regions[0].id);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Sign-in error');
     } finally {
@@ -35,7 +38,7 @@ export default function AccessPanel() {
     setBusy(true);
     setError(null);
     try {
-      const res = await provision(token);
+      const res = await provision(token, region || undefined);
       setConfig(res.config);
       setInfo(await status(token));
     } catch (e) {
@@ -108,9 +111,28 @@ export default function AccessPanel() {
             </p>
 
             {info.eligible && !config && (
-              <button className="btn primary" disabled={busy} onClick={activate}>
-                {busy ? 'provisioning…' : '[ activate vpn ]'}
-              </button>
+              <>
+                {(info.regions?.length ?? 0) > 1 && (
+                  <p className="line region-row">
+                    <span className="muted">region&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <select
+                      className="region-select"
+                      value={region}
+                      onChange={(e) => setRegion(e.target.value)}
+                    >
+                      {info.regions?.map((r) => (
+                        <option key={r.id} value={r.id}>
+                          {r.flag} {r.name} · {r.city}
+                          {info.activeRegions?.includes(r.id) ? ' (active)' : ''}
+                        </option>
+                      ))}
+                    </select>
+                  </p>
+                )}
+                <button className="btn primary" disabled={busy} onClick={activate}>
+                  {busy ? 'provisioning…' : '[ activate vpn ]'}
+                </button>
+              </>
             )}
             {!info.eligible && (
               <p className="line warn">
@@ -123,6 +145,9 @@ export default function AccessPanel() {
         {config && (
           <div className="readout">
             <p className="line muted"># wireguard.conf — import into your client</p>
+            {info?.activeRegions && info.activeRegions.length > 0 && (
+              <p className="line muted"># region: {info.activeRegions.join(', ')}</p>
+            )}
             <pre className="config">{config}</pre>
             <button className="btn primary" onClick={download}>
               [ download .conf ]

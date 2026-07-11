@@ -1,0 +1,16 @@
+[Unit]
+Description=unknown0 region agent (WireGuard peer control)
+After=network-online.target wg-quick@wg0.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+EnvironmentFile=/opt/unknown0-node/agent.env
+ExecStart=/usr/bin/node /opt/unknown0-node/agent.mjs
+Restart=always
+RestartSec=3
+# The agent shells out to `wg`, which needs privilege.
+User=root
+
+[Install]
+WantedBy=multi-user.target

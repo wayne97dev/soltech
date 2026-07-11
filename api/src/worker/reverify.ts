@@ -1,7 +1,8 @@
 import cron from 'node-cron';
 import { prisma } from '../db';
 import { checkEligibility } from '../chain';
-import { wireguard } from '../wireguard';
+import { providerForRegion } from '../wireguard';
+import { getRegion, defaultRegion } from '../regions';
 import { config } from '../config';
 
 /**
@@ -20,7 +21,8 @@ export function startReverifyWorker(): void {
       try {
         const elig = await checkEligibility(peer.user.wallet);
         if (!elig.eligible) {
-          await wireguard.removePeer(peer.publicKey).catch(() => {});
+          const region = getRegion(peer.region) ?? defaultRegion();
+          await providerForRegion(region).removePeer(peer.publicKey).catch(() => {});
           await prisma.vpnPeer.update({ where: { id: peer.id }, data: { active: false } });
           console.log(
             `[reverify] revoked ${peer.user.wallet} (balance ${elig.balance} < ${elig.required})`,

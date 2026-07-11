@@ -35,11 +35,13 @@ model VpnPeer {
   // NB: in this MVP we store the private key so we can re-display the config.
   // See the security notes in the README (future: client-side key generation).
   privateKey String
-  address    String  @unique // IP assegnato al client, es. "10.8.0.2/32"
+  address    String  @unique // client IP, e.g. "10.8.0.2/32" (unique per-region subnet)
   active     Boolean @default(true)
+  region     String  @default("de") // which VPN exit node this peer lives on
 
   lastVerifiedAt DateTime @default(now())
   createdAt      DateTime @default(now())
 
   @@index([userId])
+  @@index([region])
 }

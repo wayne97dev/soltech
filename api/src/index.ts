@@ -4,6 +4,7 @@ import jwt from '@fastify/jwt';
 import { config } from './config';
 import { authRoutes } from './routes/auth';
 import { accessRoutes } from './routes/access';
+import { regionRoutes } from './routes/regions';
 import { searchRoutes } from './routes/search';
 import { downloadRoutes } from './routes/download';
 import { startReverifyWorker } from './worker/reverify';
@@ -32,6 +33,7 @@ async function main(): Promise<void> {
 
   await app.register(authRoutes);
   await app.register(accessRoutes);
+  await app.register(regionRoutes);
   await app.register(searchRoutes);
   await app.register(downloadRoutes);
 

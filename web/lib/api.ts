@@ -1,5 +1,12 @@
 const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
 
+export interface Region {
+  id: string;
+  name: string;
+  flag: string;
+  city: string;
+}
+
 export interface AccessStatus {
   wallet: string;
   eligible: boolean;
@@ -7,12 +14,17 @@ export interface AccessStatus {
   required: number;
   reason?: string;
   vpnActive: boolean;
+  // Optional so the client stays compatible with an older backend that
+  // doesn't send them yet (avoids a crash during a staged rollout).
+  regions?: Region[];
+  activeRegions?: string[];
 }
 
 export interface VpnConfig {
   config: string;
   address: string;
   publicKey: string;
+  region: string;
 }
 
 async function asJson(res: Response) {
@@ -49,10 +61,20 @@ export async function status(token: string): Promise<AccessStatus> {
   return asJson(await fetch(`${API}/access/status`, { headers: auth(token) }));
 }
 
-export async function provision(token: string): Promise<VpnConfig> {
+export async function provision(token: string, region?: string): Promise<VpnConfig> {
   return asJson(
-    await fetch(`${API}/access/provision`, { method: 'POST', headers: auth(token) }),
+    await fetch(`${API}/access/provision`, {
+      method: 'POST',
+      headers: { ...auth(token), 'content-type': 'application/json' },
+      body: JSON.stringify(region ? { region } : {}),
+    }),
   );
+}
+
+// Public: the list of VPN regions, so the picker can render before sign-in.
+export async function getRegions(): Promise<Region[]> {
+  const data = await asJson(await fetch(`${API}/regions`));
+  return data.regions ?? [];
 }
 
 export type SearchCategory = 'general' | 'images' | 'news' | 'videos';
