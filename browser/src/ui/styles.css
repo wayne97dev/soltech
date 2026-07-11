@@ -181,6 +181,29 @@ body {
   white-space: nowrap;
 }
 
+.region-pill {
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 12px;
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+}
+
+.region-pill:hover {
+  color: var(--text);
+  border-color: var(--line);
+}
+
+.region-pill:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
 #vpn {
   cursor: pointer;
   color: var(--text);

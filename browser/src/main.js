@@ -35,13 +35,18 @@ let blockedCount = 0;
 let vpnOn = false;
 let mainWindow = null;
 
-// unknown0 VPN for the browser: route the app's traffic through a SOCKS5 proxy on our
-// server — per-app, like Tor Browser (hides your IP for browsing without touching the
-// rest of the system). Prototype: shared credentials; a real build issues them per holder.
-// HTTP proxy (not SOCKS5 — Chromium can't authenticate SOCKS5 proxies).
-const VPN_PROXY = 'http://144.91.104.144:8888';
+// unknown0 VPN for the browser: route the app's traffic through an HTTP proxy on one of
+// our region nodes — per-app, like Tor Browser (hides your IP for browsing without
+// touching the rest of the system). Pick a country; browsing exits from that node.
+// (HTTP proxy, not SOCKS5 — Chromium can't authenticate SOCKS5 proxies.)
+// Prototype: shared credentials; a real build issues them per holder.
+const VPN_REGIONS = [
+  { id: 'de', name: 'Germany', flag: '🇩🇪', proxy: 'http://144.91.104.144:8888' },
+  { id: 'us', name: 'United States', flag: '🇺🇸', proxy: 'http://217.216.55.224:8888' },
+];
 const VPN_USER = 'unknown0';
 const VPN_PASS = 'unknown0-beta';
+let vpnRegion = VPN_REGIONS[0].id;
 
 function isBlocked(url) {
   try {
@@ -117,15 +122,19 @@ ipcMain.handle('privacy:toggleBlocker', (_event, on) => {
   return blockerEnabled;
 });
 
-ipcMain.handle('vpn:toggle', async (_event, on) => {
+ipcMain.handle('vpn:regions', () => VPN_REGIONS.map(({ id, name, flag }) => ({ id, name, flag })));
+
+ipcMain.handle('vpn:toggle', async (_event, on, regionId) => {
   vpnOn = Boolean(on);
+  if (regionId && VPN_REGIONS.some((r) => r.id === regionId)) vpnRegion = regionId;
+  const region = VPN_REGIONS.find((r) => r.id === vpnRegion) || VPN_REGIONS[0];
   const ses = session.defaultSession;
   // Route (or stop routing) the whole app — including every tab's <webview> —
-  // through the unknown0 server. Your browsing exits from the server's IP.
+  // through the chosen region's node. Your browsing exits from that node's IP.
   if (vpnOn) {
-    await ses.setProxy({ proxyRules: VPN_PROXY });
+    await ses.setProxy({ proxyRules: region.proxy });
   } else {
     await ses.setProxy({ mode: 'direct' });
   }
-  return vpnOn;
+  return { on: vpnOn, region: region.id };
 });

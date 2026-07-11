@@ -205,17 +205,59 @@ document.getElementById('reload').addEventListener('click', () => {
 });
 document.getElementById('newtab').addEventListener('click', () => createTab(NEWTAB));
 
-// --- unknown0 VPN toggle (prototype) ---
+// --- unknown0 VPN toggle + region picker (prototype) ---
 let vpnOn = false;
+let vpnRegion = 'de';
 const vpnBtn = document.getElementById('vpn');
+const vpnRegionSel = document.getElementById('vpnRegion');
+
+// Populate the exit-country picker from the main process.
+(async () => {
+  try {
+    const regions = (window.unknown0.vpnRegions && (await window.unknown0.vpnRegions())) || [];
+    if (regions.length) {
+      vpnRegionSel.innerHTML = '';
+      for (const r of regions) {
+        const opt = document.createElement('option');
+        opt.value = r.id;
+        opt.textContent = `${r.flag} ${r.name}`;
+        vpnRegionSel.appendChild(opt);
+      }
+      vpnRegion = regions[0].id;
+    }
+  } catch {
+    /* keep default */
+  }
+})();
+
+function renderVpn() {
+  vpnBtn.textContent = 'VPN: ' + (vpnOn ? 'on' : 'off');
+  vpnBtn.classList.toggle('on', vpnOn);
+}
+
 vpnBtn.addEventListener('click', async () => {
   try {
-    vpnOn = await window.unknown0.toggleVpn(!vpnOn);
+    const res = await window.unknown0.toggleVpn(!vpnOn, vpnRegion);
+    vpnOn = res.on;
+    vpnRegion = res.region;
   } catch {
     vpnOn = !vpnOn;
   }
-  vpnBtn.textContent = 'VPN: ' + (vpnOn ? 'on' : 'off');
-  vpnBtn.classList.toggle('on', vpnOn);
+  renderVpn();
+});
+
+// Switching country while the VPN is on re-routes the exit immediately.
+vpnRegionSel.addEventListener('change', async () => {
+  vpnRegion = vpnRegionSel.value;
+  if (vpnOn) {
+    try {
+      const res = await window.unknown0.toggleVpn(true, vpnRegion);
+      vpnOn = res.on;
+    } catch {
+      /* ignore */
+    }
+  }
+  renderVpn();
 });
 
 // --- Tracker blocker counter ---

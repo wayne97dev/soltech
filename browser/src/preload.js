@@ -4,6 +4,7 @@ const { contextBridge, ipcRenderer } = require('electron');
 contextBridge.exposeInMainWorld('unknown0', {
   versions: () => ipcRenderer.invoke('app:versions'),
   toggleBlocker: (on) => ipcRenderer.invoke('privacy:toggleBlocker', on),
-  toggleVpn: (on) => ipcRenderer.invoke('vpn:toggle', on),
+  vpnRegions: () => ipcRenderer.invoke('vpn:regions'),
+  toggleVpn: (on, region) => ipcRenderer.invoke('vpn:toggle', on, region),
   onBlocked: (cb) => ipcRenderer.on('privacy:blocked', (_event, n) => cb(n)),
 });
