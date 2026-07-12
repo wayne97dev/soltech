@@ -99,8 +99,10 @@ cat <<EOF
   "serverPublicKey": "${SERVER_PUB}",
   "clientSubnet": "${SUBNET}",
   "dns": "1.1.1.1",
-  "control": { "kind": "agent", "url": "http://${PUB_IP}:${AGENT_PORT}", "secret": "${AGENT_SECRET}" }
+  "control": { "kind": "agent", "url": "http://${PUB_IP}:${AGENT_PORT}", "secret": "${AGENT_SECRET}" },
+  "proxy": "http://${PUB_IP}:8888"
 }
 EOF
+echo "(the \"proxy\" field assumes you also run proxy.sh on this node — needed for the browser VPN)"
 echo ""
 echo "Agent health:  curl -s http://${PUB_IP}:${AGENT_PORT}/health"

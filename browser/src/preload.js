@@ -5,6 +5,7 @@ contextBridge.exposeInMainWorld('unknown0', {
   versions: () => ipcRenderer.invoke('app:versions'),
   toggleBlocker: (on) => ipcRenderer.invoke('privacy:toggleBlocker', on),
   vpnRegions: () => ipcRenderer.invoke('vpn:regions'),
+  onRegions: (cb) => ipcRenderer.on('vpn:regions', (_event, list) => cb(list)),
   toggleVpn: (on, region) => ipcRenderer.invoke('vpn:toggle', on, region),
   onBlocked: (cb) => ipcRenderer.on('privacy:blocked', (_event, n) => cb(n)),
 });

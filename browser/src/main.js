@@ -40,13 +40,37 @@ let mainWindow = null;
 // touching the rest of the system). Pick a country; browsing exits from that node.
 // (HTTP proxy, not SOCKS5 — Chromium can't authenticate SOCKS5 proxies.)
 // Prototype: shared credentials; a real build issues them per holder.
-const VPN_REGIONS = [
+const API_BASE = 'https://api.unknown0.net';
+// Baked-in fallback used only if the API is unreachable at startup.
+const DEFAULT_REGIONS = [
   { id: 'de', name: 'Germany', flag: '🇩🇪', proxy: 'http://144.91.104.144:8888' },
   { id: 'us', name: 'United States', flag: '🇺🇸', proxy: 'http://217.216.55.224:8888' },
 ];
+let VPN_REGIONS = DEFAULT_REGIONS.slice();
 const VPN_USER = 'unknown0';
 const VPN_PASS = 'unknown0-beta';
 let vpnRegion = VPN_REGIONS[0].id;
+
+// Pull the live exit-node list from the API so new countries show up without
+// shipping a new app build. Silently keeps the defaults if the fetch fails.
+async function loadRegions() {
+  try {
+    const res = await fetch(`${API_BASE}/vpn/nodes`, { signal: AbortSignal.timeout(6000) });
+    if (!res.ok) return;
+    const data = await res.json();
+    const nodes = Array.isArray(data.nodes) ? data.nodes.filter((n) => n && n.id && n.proxy) : [];
+    if (nodes.length) {
+      VPN_REGIONS = nodes;
+      if (!VPN_REGIONS.some((r) => r.id === vpnRegion)) vpnRegion = VPN_REGIONS[0].id;
+    }
+  } catch {
+    /* keep defaults */
+  }
+}
+
+function publicRegions() {
+  return VPN_REGIONS.map(({ id, name, flag }) => ({ id, name, flag }));
+}
 
 function isBlocked(url) {
   try {
@@ -94,6 +118,13 @@ app.whenReady().then(() => {
   installBlocker(session.defaultSession);
   createWindow();
 
+  // Fetch the live node list; when it arrives, refresh the renderer's picker.
+  loadRegions().then(() => {
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.webContents.send('vpn:regions', publicRegions());
+    }
+  });
+
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
@@ -122,7 +153,7 @@ ipcMain.handle('privacy:toggleBlocker', (_event, on) => {
   return blockerEnabled;
 });
 
-ipcMain.handle('vpn:regions', () => VPN_REGIONS.map(({ id, name, flag }) => ({ id, name, flag })));
+ipcMain.handle('vpn:regions', () => publicRegions());
 
 ipcMain.handle('vpn:toggle', async (_event, on, regionId) => {
   vpnOn = Boolean(on);

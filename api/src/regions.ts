@@ -20,6 +20,7 @@ export interface Region {
   clientSubnet: string; // e.g. "10.8.0.0/24" — MUST be unique per region
   dns: string;
   control: RegionControl;
+  proxy?: string; // HTTP proxy URL for the desktop browser VPN, e.g. http://ip:8888
 }
 
 // Only the safe, client-facing fields (no secrets).
@@ -28,6 +29,14 @@ export interface PublicRegion {
   name: string;
   flag: string;
   city: string;
+}
+
+// A browser VPN exit node: what the desktop app needs to route through it.
+export interface BrowserNode {
+  id: string;
+  name: string;
+  flag: string;
+  proxy: string;
 }
 
 function normalize(r: Region): Region {
@@ -106,4 +115,13 @@ export function defaultRegion(): Region {
 
 export function publicRegions(): PublicRegion[] {
   return regions().map(({ id, name, flag, city }) => ({ id, name, flag, city }));
+}
+
+// The exit nodes the desktop browser can route through: only regions that have
+// an HTTP proxy configured. The browser fetches this so new countries appear
+// without shipping a new app build.
+export function browserNodes(): BrowserNode[] {
+  return regions()
+    .filter((r) => r.proxy)
+    .map(({ id, name, flag, proxy }) => ({ id, name, flag, proxy: proxy as string }));
 }

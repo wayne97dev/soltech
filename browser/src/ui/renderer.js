@@ -205,30 +205,35 @@ document.getElementById('reload').addEventListener('click', () => {
 });
 document.getElementById('newtab').addEventListener('click', () => createTab(NEWTAB));
 
-// --- unknown0 VPN toggle + region picker (prototype) ---
+// --- unknown0 VPN toggle + region picker ---
 let vpnOn = false;
 let vpnRegion = 'de';
 const vpnBtn = document.getElementById('vpn');
 const vpnRegionSel = document.getElementById('vpnRegion');
 
-// Populate the exit-country picker from the main process.
-(async () => {
-  try {
-    const regions = (window.unknown0.vpnRegions && (await window.unknown0.vpnRegions())) || [];
-    if (regions.length) {
-      vpnRegionSel.innerHTML = '';
-      for (const r of regions) {
-        const opt = document.createElement('option');
-        opt.value = r.id;
-        opt.textContent = `${r.flag} ${r.name}`;
-        vpnRegionSel.appendChild(opt);
-      }
-      vpnRegion = regions[0].id;
-    }
-  } catch {
-    /* keep default */
+// (Re)fill the exit-country picker, keeping the current pick if it still exists.
+function populateRegions(regions) {
+  if (!Array.isArray(regions) || !regions.length) return;
+  const prev = vpnRegionSel.value || vpnRegion;
+  vpnRegionSel.innerHTML = '';
+  for (const r of regions) {
+    const opt = document.createElement('option');
+    opt.value = r.id;
+    opt.textContent = `${r.flag} ${r.name}`;
+    vpnRegionSel.appendChild(opt);
   }
-})();
+  const keep = regions.some((r) => r.id === prev) ? prev : regions[0].id;
+  vpnRegionSel.value = keep;
+  vpnRegion = keep;
+}
+
+// Initial list (baked defaults) + live refresh pushed from the API at startup.
+if (window.unknown0 && window.unknown0.onRegions) {
+  window.unknown0.onRegions(populateRegions);
+}
+if (window.unknown0 && window.unknown0.vpnRegions) {
+  window.unknown0.vpnRegions().then(populateRegions).catch(() => {});
+}
 
 function renderVpn() {
   vpnBtn.textContent = 'VPN: ' + (vpnOn ? 'on' : 'off');
