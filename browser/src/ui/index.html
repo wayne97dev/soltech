@@ -27,11 +27,62 @@
       </div>
       <select id="vpnRegion" class="region-pill" title="VPN exit country"></select>
       <button id="vpn" class="pill" title="Toggle unknown0 VPN">VPN: off</button>
+      <!-- hidden until the swap logic is wired + wallet-tested (remove `hidden` to ship) -->
+      <button id="swapBtn" class="pill" title="Private swap on Robinhood Chain" hidden>swap</button>
       <div id="shield" class="pill" title="Trackers blocked">⛨ <span id="blocked">0</span></div>
     </div>
 
     <div id="views"></div>
 
+    <!-- Private swap panel (Uniswap v3 on Robinhood Chain, routed through the VPN). -->
+    <div id="swap-panel" class="swap-panel" hidden>
+      <div class="swap-card">
+        <div class="swap-head">
+          <span class="swap-title">unknown0 <b>swap</b></span>
+          <button id="swap-close" class="icon-btn" title="Close">×</button>
+        </div>
+
+        <div id="swap-wallet" class="swap-wallet">
+          <button id="swap-connect" class="btn-accent">connect wallet</button>
+        </div>
+
+        <div class="swap-row">
+          <div class="swap-row-top"><span>from</span><span id="swap-bal-in" class="swap-bal"></span></div>
+          <div class="swap-row-mid">
+            <input id="swap-amount-in" class="swap-amount" inputmode="decimal" placeholder="0.0" />
+            <select id="swap-token-in" class="swap-token"></select>
+          </div>
+        </div>
+
+        <div class="swap-switch"><button id="swap-flip" class="icon-btn" title="Flip">↳</button></div>
+
+        <div class="swap-row">
+          <div class="swap-row-top"><span>to (estimated)</span></div>
+          <div class="swap-row-mid">
+            <input id="swap-amount-out" class="swap-amount" placeholder="0.0" readonly />
+            <select id="swap-token-out" class="swap-token"></select>
+          </div>
+        </div>
+
+        <div class="swap-meta">
+          <label>slippage
+            <select id="swap-slippage">
+              <option value="0.5">0.5%</option>
+              <option value="1" selected>1%</option>
+              <option value="3">3%</option>
+              <option value="5">5%</option>
+            </select>
+          </label>
+          <span id="swap-rate" class="swap-rate"></span>
+        </div>
+
+        <button id="swap-go" class="btn-accent" disabled>enter an amount</button>
+        <p id="swap-status" class="swap-status"></p>
+        <p class="swap-foot">uniswap v3 · robinhood chain · exits through your vpn when on</p>
+      </div>
+    </div>
+
     <script src="renderer.js"></script>
+    <script src="swap.bundle.js"></script>
   </body>
 </html>

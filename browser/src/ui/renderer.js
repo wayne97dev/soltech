@@ -272,5 +272,19 @@ if (window.unknown0 && window.unknown0.onBlocked) {
   });
 }
 
+// --- Swap panel open/close (the form itself is wired by swap.bundle.js) ---
+const swapBtn = document.getElementById('swapBtn');
+const swapPanel = document.getElementById('swap-panel');
+const swapClose = document.getElementById('swap-close');
+if (swapBtn && swapPanel) {
+  swapBtn.addEventListener('click', () => {
+    swapPanel.hidden = !swapPanel.hidden;
+  });
+  if (swapClose) swapClose.addEventListener('click', () => (swapPanel.hidden = true));
+  swapPanel.addEventListener('click', (e) => {
+    if (e.target === swapPanel) swapPanel.hidden = true; // click backdrop to close
+  });
+}
+
 // First tab
 createTab(NEWTAB);
