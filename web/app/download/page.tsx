@@ -22,6 +22,7 @@ export default function DownloadPage() {
         <nav className="nav-links">
           <Link href="/">home</Link>
           <Link href="/search">search</Link>
+          <Link href="/swap">swap</Link>
           <Socials />
           <span className="nav-cta nav-current">download</span>
         </nav>
